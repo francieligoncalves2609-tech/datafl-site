@@ -610,6 +610,85 @@ footer {
 /* ══ CONTADOR ══ */
 .counter { display: inline-block }
 
+/* ══ EQUIPE ══ */
+#equipe { background: var(--bg2) }
+.team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px }
+.team-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 32px 24px; text-align: center;
+  transition: transform .3s, border-color .3s; position: relative; overflow: hidden;
+}
+.team-card:hover { transform: translateY(-6px); border-color: rgba(0,188,200,0.35) }
+.team-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--grad);
+}
+.team-avatar {
+  width: 84px; height: 84px; border-radius: 50%;
+  margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 900; color: #fff;
+  border: 3px solid var(--border);
+}
+.team-name { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 4px }
+.team-role {
+  font-size: 11px; font-weight: 800; color: var(--teal); text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px;
+}
+.team-bio { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 16px }
+.team-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 18px }
+.team-tag {
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+  background: rgba(0,188,200,0.08); border: 1px solid rgba(0,188,200,0.2); color: var(--teal);
+}
+.team-li {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+  color: var(--muted); text-decoration: none; transition: color .2s;
+  padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+}
+.team-li:hover { color: var(--teal); border-color: rgba(0,188,200,0.3) }
+
+/* ══ ALOCAÇÃO ══ */
+#alocacao { background: var(--bg) }
+.aloc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center }
+.aloc-text { }
+.aloc-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 }
+.aloc-pill {
+  display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 50px;
+  background: var(--card); border: 1px solid var(--border); font-size: 13px; font-weight: 600;
+  color: var(--dark); transition: border-color .25s, transform .25s;
+}
+.aloc-pill:hover { border-color: var(--teal); transform: translateX(4px) }
+.aloc-pill-icon { font-size: 18px; flex-shrink: 0 }
+.aloc-cards { display: grid; grid-template-columns: 1fr; gap: 16px }
+.aloc-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+  padding: 28px; transition: transform .3s, border-color .3s; position: relative; overflow: hidden;
+}
+.aloc-card:hover { transform: translateY(-4px) }
+.aloc-card.featured { border-color: var(--teal); box-shadow: 0 0 48px rgba(0,188,200,0.12) }
+.aloc-card.featured::before {
+  content: '⭐ Mais procurado'; position: absolute; top: 16px; right: 16px;
+  background: var(--grad); color: #fff; font-size: 10px; font-weight: 800;
+  letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px;
+}
+.aloc-card-title { font-size: 17px; font-weight: 800; color: var(--dark); margin-bottom: 4px }
+.aloc-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px }
+.aloc-price { font-size: 36px; font-weight: 900; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 4px }
+.aloc-price sup { font-size: 16px }
+.aloc-price-unit { font-size: 12px; color: var(--muted); margin-bottom: 18px }
+.aloc-feats { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px }
+.aloc-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dark); font-weight: 500 }
+.aloc-feat::before { content: '✓'; color: var(--teal); font-weight: 900; flex-shrink: 0 }
+.aloc-btn {
+  display: block; text-align: center; padding: 12px; border-radius: 30px;
+  font-size: 13px; font-weight: 700; text-decoration: none; transition: all .25s;
+  border: 1.5px solid var(--border); color: var(--mid);
+}
+.aloc-card.featured .aloc-btn { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 4px 24px rgba(0,188,200,0.3) }
+.aloc-btn:hover { border-color: var(--teal); color: var(--teal) }
+.aloc-card.featured .aloc-btn:hover { opacity: .88; transform: translateY(-2px) }
+
 /* ══ RESPONSIVE COMPLETO ══ */
 
 /* Tablet landscape & small desktop */
@@ -676,6 +755,9 @@ footer {
 
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px }
   footer { padding: 48px 20px 32px }
+
+  .team-grid { grid-template-columns: repeat(2,1fr); gap: 16px }
+  .aloc-grid { grid-template-columns: 1fr; gap: 32px }
 }
 
 /* Mobile */
@@ -725,6 +807,9 @@ footer {
 
   nav { padding: 0 16px; height: 56px }
   .nav-cta { padding: 7px 14px; font-size: 12px }
+
+  .team-grid { grid-template-columns: 1fr }
+  .team-card { padding: 24px 18px }
 }
 </style>
 </head>
@@ -755,8 +840,9 @@ footer {
   </div>
   <div class="nav-links">
     <a href="#servicos">Serviços</a>
-    <a href="#como-funciona">Como funciona</a>
+    <a href="#alocacao">Alocação</a>
     <a href="#planos">Planos</a>
+    <a href="#equipe">Equipe</a>
     <a href="#tecnologias">Tecnologias</a>
     <a href="#cta" class="nav-cta">Contratar agora</a>
   </div>
@@ -1333,6 +1419,63 @@ footer {
 </section>
 
 
+<!-- ══ ALOCAÇÃO ══ -->
+<section id="alocacao">
+  <div class="sec-inner">
+    <div class="aloc-grid">
+
+      <div class="aloc-text">
+        <div class="sec-label">Especialista na sua empresa</div>
+        <div class="sec-title">Alocação<br><span class="g">sob medida.</span></div>
+        <p class="sec-desc" style="margin-bottom:0">Tenha um especialista Data FL dedicado ao seu time — com a flexibilidade de um parceiro e a entrega de um sênior. Sem vínculo CLT, sem encargos, sem burocracia.</p>
+
+        <div class="aloc-pills">
+          <div class="aloc-pill"><span class="aloc-pill-icon">📅</span> Contratos a partir de 1 mês</div>
+          <div class="aloc-pill"><span class="aloc-pill-icon">🏠</span> Presencial, híbrido ou remoto</div>
+          <div class="aloc-pill"><span class="aloc-pill-icon">⚡</span> Início em até 48h</div>
+          <div class="aloc-pill"><span class="aloc-pill-icon">🔄</span> Troca de especialidade a qualquer momento</div>
+          <div class="aloc-pill"><span class="aloc-pill-icon">📋</span> Relatório mensal de entregas</div>
+          <div class="aloc-pill"><span class="aloc-pill-icon">🔒</span> NDA e sigilo garantidos</div>
+        </div>
+
+        <a href="#cta" class="btn-primary" style="display:inline-block">Falar sobre alocação →</a>
+      </div>
+
+      <div class="aloc-cards">
+        <div class="aloc-card">
+          <div class="aloc-card-title">Part-time</div>
+          <div class="aloc-card-sub">Ideal para demandas contínuas não exclusivas</div>
+          <div class="aloc-price"><sup>R$</sup>5.500</div>
+          <div class="aloc-price-unit">por mês · 80h mensais</div>
+          <div class="aloc-feats">
+            <div class="aloc-feat">4h/dia útil dedicadas ao seu projeto</div>
+            <div class="aloc-feat">Power BI ou Power Apps ou Engenharia</div>
+            <div class="aloc-feat">Reuniões de alinhamento semanais</div>
+            <div class="aloc-feat">Relatório quinzenal de entregas</div>
+          </div>
+          <a href="#cta" class="aloc-btn">Solicitar proposta</a>
+        </div>
+
+        <div class="aloc-card featured">
+          <div class="aloc-card-title">Full-time</div>
+          <div class="aloc-card-sub">Especialista 100% dedicado ao seu time</div>
+          <div class="aloc-price"><sup>R$</sup>9.500</div>
+          <div class="aloc-price-unit">por mês · 120h mensais</div>
+          <div class="aloc-feats">
+            <div class="aloc-feat">Dedicação exclusiva ao seu projeto</div>
+            <div class="aloc-feat">Multi-skill: BI + Apps + Engenharia</div>
+            <div class="aloc-feat">Integração direta com seu time</div>
+            <div class="aloc-feat">Relatório semanal + daily se necessário</div>
+            <div class="aloc-feat">Renovação mensal sem fidelidade</div>
+          </div>
+          <a href="#cta" class="aloc-btn">Solicitar proposta</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ══ DIFERENCIAIS ══ -->
 <section id="diferenciais">
   <div class="sec-inner">
@@ -1372,6 +1515,75 @@ footer {
         <div class="dif-title">Sem lock-in</div>
         <p class="dif-desc">Entregamos com documentação completa e transferência de conhecimento. O projeto é seu, não nosso.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EQUIPE ══ -->
+<section id="equipe">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">Quem entrega</div>
+      <div class="sec-title">Especialistas <span class="g">dedicados ao seu projeto.</span></div>
+      <p class="sec-desc">Cada entrega é conduzida por sêniors com experiência real em projetos corporativos — não juniors aprendendo na sua conta.</p>
+    </div>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#00bcc8,#a3c5a0)">F</div>
+        <div class="team-name">Francieli Gonçalves</div>
+        <div class="team-role">Power BI · UX Designer</div>
+        <p class="team-bio">9 anos em projetos de dados corporativos. Especialista em dashboards executivos, modelagem semântica e design de relatórios que comunicam.</p>
+        <div class="team-tags">
+          <span class="team-tag">Power BI</span>
+          <span class="team-tag">DAX</span>
+          <span class="team-tag">UX/UI</span>
+          <span class="team-tag">Figma</span>
+        </div>
+        <a href="#" class="team-li">🔗 LinkedIn</a>
+      </div>
+
+      <div class="team-card" style="--card-color:#2d5a3d">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#2d5a3d,#00bcc8)">E</div>
+        <div class="team-name">Especialista em Dados</div>
+        <div class="team-role">Engenharia de Dados</div>
+        <p class="team-bio">Sênior em pipelines de dados, arquitetura lakehouse e integração de sistemas. Domínio em Fabric, Databricks e SQL Server avançado.</p>
+        <div class="team-tags">
+          <span class="team-tag" style="color:#2d5a3d;border-color:rgba(45,90,61,0.3);background:rgba(45,90,61,0.08)">Fabric</span>
+          <span class="team-tag" style="color:#2d5a3d;border-color:rgba(45,90,61,0.3);background:rgba(45,90,61,0.08)">SQL</span>
+          <span class="team-tag" style="color:#2d5a3d;border-color:rgba(45,90,61,0.3);background:rgba(45,90,61,0.08)">Databricks</span>
+          <span class="team-tag" style="color:#2d5a3d;border-color:rgba(45,90,61,0.3);background:rgba(45,90,61,0.08)">ETL</span>
+        </div>
+        <a href="#" class="team-li">🔗 LinkedIn</a>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#e67e22,#f39c12)">A</div>
+        <div class="team-name">Especialista Power Apps</div>
+        <div class="team-role">Power Apps · Power Automate</div>
+        <p class="team-bio">Desenvolvedor sênior de aplicações low-code. Canvas Apps, Model-Driven, Dataverse e automações complexas com Power Automate e integrações REST.</p>
+        <div class="team-tags">
+          <span class="team-tag" style="color:#e67e22;border-color:rgba(230,126,34,0.3);background:rgba(230,126,34,0.08)">Canvas Apps</span>
+          <span class="team-tag" style="color:#e67e22;border-color:rgba(230,126,34,0.3);background:rgba(230,126,34,0.08)">Dataverse</span>
+          <span class="team-tag" style="color:#e67e22;border-color:rgba(230,126,34,0.3);background:rgba(230,126,34,0.08)">Automate</span>
+        </div>
+        <a href="#" class="team-li">🔗 LinkedIn</a>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#c0392b,#8b5cf6)">U</div>
+        <div class="team-name">UX Designer BI</div>
+        <div class="team-role">UX · Design System · Figma</div>
+        <p class="team-bio">Designer especializado em dashboards analíticos. Wireframes, temas Power BI, design systems corporativos e layouts que transformam dados em decisão.</p>
+        <div class="team-tags">
+          <span class="team-tag" style="color:#c0392b;border-color:rgba(192,57,43,0.3);background:rgba(192,57,43,0.08)">Figma</span>
+          <span class="team-tag" style="color:#c0392b;border-color:rgba(192,57,43,0.3);background:rgba(192,57,43,0.08)">Temas PBI</span>
+          <span class="team-tag" style="color:#c0392b;border-color:rgba(192,57,43,0.3);background:rgba(192,57,43,0.08)">SVG</span>
+          <span class="team-tag" style="color:#c0392b;border-color:rgba(192,57,43,0.3);background:rgba(192,57,43,0.08)">Design System</span>
+        </div>
+        <a href="#" class="team-li">🔗 LinkedIn</a>
+      </div>
+
     </div>
   </div>
 </section>
