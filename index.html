@@ -461,6 +461,17 @@ section { padding: 100px 60px }
 .calc-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,200,0.45) }
 .calc-cta-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; line-height: 1.5 }
 .calc-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 20px 0 }
+
+/* Garantias */
+.pay-garantias { margin-top: 16px; display: flex; flex-direction: column; gap: 10px }
+.garantia-item {
+  display: flex; align-items: flex-start; gap: 10px; font-size: 11px;
+  color: var(--muted); line-height: 1.55; padding: 10px 12px;
+  background: rgba(0,188,200,0.04); border: 1px solid rgba(0,188,200,0.15);
+  border-radius: 10px;
+}
+.garantia-item strong { color: var(--dark) }
+.garantia-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px }
 .calc-item.hidden { display: none }
 
 /* ══ PAGAMENTO ══ */
@@ -1323,7 +1334,7 @@ footer {
         <div class="calc-total-val"><sup>R$</sup><span id="calc-total-val">0</span></div>
         <div class="calc-discount-badge" id="calc-badge">🎉 5% de desconto aplicado — 3+ serviços!</div>
         <a href="#cta" class="calc-cta" id="calc-cta-btn" style="opacity:.4;pointer-events:none">💬 Falar via WhatsApp</a>
-        <p class="calc-cta-note">Estimativa baseada em horas médias. Prazo e escopo final alinhados no primeiro contato.</p>
+        <p class="calc-cta-note">Valores estimados com base em horas médias. O total exato é alinhado no primeiro contato.</p>
 
         <!-- Pagamento -->
         <div class="pay-section">
@@ -1349,6 +1360,18 @@ footer {
           </div>
           <div class="pay-installment" id="pay-installment-info">
             5× de <strong id="installment-val">R$0</strong> sem juros
+          </div>
+        </div>
+
+        <!-- Garantias -->
+        <div class="pay-garantias">
+          <div class="garantia-item">
+            <span class="garantia-icon">⏱️</span>
+            <span><strong>Pague só o que usar</strong> — se o serviço prevê 2h e entregamos em 1h, você paga apenas 1h.</span>
+          </div>
+          <div class="garantia-item">
+            <span class="garantia-icon">🔐</span>
+            <span><strong>Cartão cobrado após conclusão</strong> — os dados do cartão ficam seguros e o débito só acontece depois que o serviço for finalizado e aprovado por você.</span>
           </div>
         </div>
       </div>
@@ -1411,6 +1434,18 @@ footer {
             <div class="plano-feat">SLA garantido por contrato</div>
           </div>
           <a href="#cta" class="plano-btn">Falar com especialista</a>
+        </div>
+      </div>
+
+      <!-- Garantias escopo fechado -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:32px;justify-content:center">
+        <div class="garantia-item" style="max-width:340px;background:rgba(0,188,200,0.04);border:1px solid rgba(0,188,200,0.15);border-radius:12px;padding:14px 16px">
+          <span class="garantia-icon">⏱️</span>
+          <span style="font-size:12px;color:var(--muted);line-height:1.55"><strong style="color:var(--dark)">Pague só as horas utilizadas</strong> — se o escopo prevê 2h e entregamos em 1h, você paga apenas 1h.</span>
+        </div>
+        <div class="garantia-item" style="max-width:340px;background:rgba(0,188,200,0.04);border:1px solid rgba(0,188,200,0.15);border-radius:12px;padding:14px 16px">
+          <span class="garantia-icon">🔐</span>
+          <span style="font-size:12px;color:var(--muted);line-height:1.55"><strong style="color:var(--dark)">Cartão cobrado após conclusão</strong> — os dados ficam protegidos e o débito ocorre somente após sua aprovação do serviço.</span>
         </div>
       </div>
     </div>
