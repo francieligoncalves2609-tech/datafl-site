@@ -1,0 +1,1774 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data FL — Power BI & Engenharia de Dados sob demanda</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0 }
+:root {
+  --bg:      #fffef8;
+  --bg2:     #f0faf4;
+  --card:    #ffffff;
+  --border:  #e0eed8;
+  --teal:    #00bcc8;
+  --teal-d:  #008f99;
+  --sage:    #a3c5a0;
+  --cream:   #faf5c0;
+  --dark:    #1a3a2a;
+  --mid:     #2d5a3d;
+  --blue:    #008f99;
+  --purple:  #2d5a3d;
+  --orange:  #e67e22;
+  --pink:    #c0392b;
+  --white:   #ffffff;
+  --muted:   #5a8a6a;
+  --grad:    linear-gradient(135deg, #00bcc8, #a3c5a0);
+  --grad2:   linear-gradient(135deg, #2d5a3d, #00bcc8);
+}
+html { scroll-behavior: smooth }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden }
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width: 6px }
+::-webkit-scrollbar-track { background: var(--bg) }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 60px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,254,248,0.95); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-size: 22px; font-weight: 900; letter-spacing: -0.5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo span { -webkit-text-fill-color: var(--dark) }
+.nav-links { display: flex; gap: 36px; align-items: center }
+.nav-links a {
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  color: var(--muted); transition: color .2s; letter-spacing: 0.3px;
+}
+.nav-links a:hover { color: var(--dark) }
+.nav-cta {
+  background: var(--grad); color: #fff;
+  padding: 10px 24px; border-radius: 30px;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 0 24px rgba(0,212,200,0.35);
+}
+.nav-cta:hover { opacity: .85; transform: translateY(-1px) }
+
+/* ══ HERO ══ */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 100px 60px 80px;
+  position: relative; overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,188,200,0.08) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 80%, rgba(163,197,160,0.10) 0%, transparent 60%),
+              var(--bg);
+}
+.hero-grid { position: absolute; inset: 0; opacity: 0.08;
+  background-image: linear-gradient(rgba(0,188,200,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,188,200,.3) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 520px; gap: 80px; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,200,0.1); border: 1px solid rgba(0,212,200,0.3);
+  border-radius: 30px; padding: 6px 16px;
+  font-size: 12px; font-weight: 700; color: var(--teal);
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;
+}
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.5; transform:scale(1.4) } }
+.hero-title {
+  font-size: 64px; font-weight: 900; line-height: 1.05;
+  letter-spacing: -2px; margin-bottom: 10px;
+}
+.hero-title .grad { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.hero-title .grad2 { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.hero-sub {
+  font-size: 20px; font-weight: 600; color: var(--muted);
+  margin-bottom: 20px; letter-spacing: -0.3px;
+}
+.hero-desc {
+  font-size: 16px; line-height: 1.75; color: var(--muted);
+  max-width: 500px; margin-bottom: 40px;
+}
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px }
+.btn-primary {
+  background: var(--grad); color: #fff;
+  padding: 16px 36px; border-radius: 40px;
+  font-size: 15px; font-weight: 800; text-decoration: none;
+  transition: all .25s; box-shadow: 0 0 40px rgba(0,212,200,0.4);
+  letter-spacing: 0.3px;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 48px rgba(0,212,200,0.5) }
+.btn-secondary {
+  background: transparent; color: var(--dark);
+  padding: 16px 36px; border-radius: 40px;
+  font-size: 15px; font-weight: 700; text-decoration: none;
+  border: 1.5px solid var(--border); transition: all .25s;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-3px) }
+.hero-stats { display: flex; gap: 40px }
+.hstat-val {
+  font-size: 32px; font-weight: 900; background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hstat-lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 2px }
+
+/* ══ HERO VISUAL ══ */
+.hero-visual { position: relative }
+.hv-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,200,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hv-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 24px; position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.12);
+}
+.hv-card-top {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.hv-dots { display: flex; gap: 6px }
+.hv-dot { width: 10px; height: 10px; border-radius: 50% }
+.hv-title { font-size: 13px; font-weight: 700; color: var(--muted); margin-left: 6px }
+.hv-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px }
+.hv-kpi {
+  background: rgba(0,188,200,0.04); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px; text-align: center;
+}
+.hv-kval { font-size: 18px; font-weight: 900; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.hv-klbl { font-size: 9px; color: var(--muted); font-weight: 600; margin-top: 2px }
+.hv-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px }
+.hv-bar-row { display: flex; align-items: center; gap: 8px }
+.hv-blbl { font-size: 10px; color: var(--muted); min-width: 56px; font-weight: 600 }
+.hv-btrack { flex: 1; height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden }
+.hv-bfill { height: 100%; border-radius: 3px; background: var(--grad); transition: width 1.5s cubic-bezier(.4,0,.2,1) }
+.hv-bpct { font-size: 10px; color: var(--muted); min-width: 28px; text-align: right; font-weight: 600 }
+.hv-line-area { height: 80px; position: relative }
+.hv-line-area svg { width: 100%; height: 100% }
+.hv-chip {
+  position: absolute; background: var(--grad);
+  color: #fff; border-radius: 20px; padding: 5px 12px;
+  font-size: 10px; font-weight: 800;
+  box-shadow: 0 4px 16px rgba(0,212,200,0.4);
+  animation: float 3s ease-in-out infinite;
+}
+.hv-chip2 {
+  position: absolute; background: var(--grad2);
+  color: #fff; border-radius: 20px; padding: 5px 12px;
+  font-size: 10px; font-weight: 800;
+  box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+  animation: float 3s ease-in-out infinite 1.5s;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* ══ SECTION BASE ══ */
+section { padding: 100px 60px }
+.sec-inner { max-width: 1200px; margin: 0 auto }
+.sec-label {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px;
+  color: var(--teal); margin-bottom: 12px;
+}
+.sec-title {
+  font-size: 44px; font-weight: 900; line-height: 1.1;
+  letter-spacing: -1.5px; margin-bottom: 16px;
+}
+.sec-title .g { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.sec-desc { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 560px }
+.sec-head { margin-bottom: 64px }
+
+/* ══ SERVIÇOS ══ */
+#servicos { background: var(--bg2) }
+.srv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; grid-template-rows: auto auto }
+.srv-block {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 40px; position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s;
+}
+.srv-block:hover { border-color: rgba(0,212,200,0.3); transform: translateY(-4px) }
+.srv-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.srv-block.bi::before { background: var(--grad) }
+.srv-block.eng::before { background: var(--grad2) }
+.srv-glow-bg {
+  position: absolute; top: -80px; right: -80px;
+  width: 240px; height: 240px; border-radius: 50%;
+  pointer-events: none; opacity: 0.06;
+}
+.srv-block.bi .srv-glow-bg { background: var(--teal) }
+.srv-block.eng .srv-glow-bg { background: var(--purple) }
+.srv-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin-bottom: 20px;
+}
+.srv-block.bi  .srv-icon { background: rgba(0,212,200,0.12);  border: 1px solid rgba(0,212,200,0.2) }
+.srv-block.eng .srv-icon { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2) }
+.srv-block.apps .srv-icon { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2) }
+.srv-block.ux   .srv-icon { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.2) }
+.srv-block.apps::before { background: linear-gradient(135deg,#f97316,#fbbf24) }
+.srv-block.ux::before   { background: linear-gradient(135deg,#ec4899,#8b5cf6) }
+.srv-block.apps .srv-glow-bg { background: #f97316 }
+.srv-block.ux   .srv-glow-bg { background: #ec4899 }
+.srv-block.apps .srv-item-dot { background: #f97316 }
+.srv-block.ux   .srv-item-dot { background: #ec4899 }
+.srv-block.apps .srv-tag { background: rgba(249,115,22,0.1); color: #fb923c; border: 1px solid rgba(249,115,22,0.25) }
+.srv-block.ux   .srv-tag { background: rgba(236,72,153,0.1); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.25) }
+.srv-name { font-size: 24px; font-weight: 900; margin-bottom: 8px }
+.srv-desc { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 28px }
+.srv-items { display: flex; flex-direction: column; gap: 10px }
+.srv-item {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(0,188,200,0.03); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+  transition: border-color .2s, background .2s;
+}
+.srv-item:hover { border-color: rgba(0,188,200,0.3); background: rgba(0,188,200,0.06) }
+.srv-item-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.srv-block.bi .srv-item-dot { background: var(--teal) }
+.srv-block.eng .srv-item-dot { background: var(--purple) }
+.srv-item-text { font-size: 13px; font-weight: 600; color: var(--dark); line-height: 1.4; flex: 1 }
+.srv-item-text span { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px }
+.svc-saiba {
+  font-size: 11px; font-weight: 700; color: var(--teal); text-decoration: none;
+  white-space: nowrap; margin-left: auto; padding: 3px 10px;
+  border: 1px solid rgba(0,188,200,0.3); border-radius: 20px;
+  transition: all .2s; flex-shrink: 0;
+}
+.svc-saiba:hover { background: rgba(0,188,200,0.1); border-color: var(--teal) }
+.srv-tag {
+  display: inline-block; margin-top: 24px;
+  padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700;
+}
+.srv-block.bi .srv-tag { background: rgba(0,212,200,0.1); color: var(--teal); border: 1px solid rgba(0,212,200,0.25) }
+.srv-block.eng .srv-tag { background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.25) }
+
+/* ══ COMO FUNCIONA ══ */
+#como-funciona { background: var(--bg) }
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 64px }
+.step {
+  position: relative; text-align: center;
+}
+.step::after {
+  content: ''; position: absolute; top: 36px; left: calc(50% + 48px); right: calc(-50% + 48px);
+  height: 1px; background: linear-gradient(90deg, var(--teal), var(--blue));
+  opacity: 0.25;
+}
+.step:last-child::after { display: none }
+.step-num {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--grad); color: #fff;
+  font-size: 22px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; position: relative; z-index: 1;
+  box-shadow: 0 0 32px rgba(0,212,200,0.3);
+}
+.step-title { font-size: 17px; font-weight: 800; margin-bottom: 10px }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.6 }
+.step-icon { font-size: 22px; margin-bottom: 6px }
+
+/* ══ PLANOS ══ */
+#planos { background: var(--bg2) }
+
+/* Profile toggle */
+.profile-toggle {
+  display: flex; gap: 8px; justify-content: center; margin-bottom: 36px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 50px; padding: 6px; width: fit-content; margin-left: auto; margin-right: auto;
+}
+.profile-btn {
+  padding: 11px 36px; border-radius: 40px; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 700; transition: all .25s; background: transparent;
+  color: var(--muted); letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px;
+}
+.profile-btn.active { background: var(--grad); color: #fff; box-shadow: 0 4px 20px rgba(0,212,200,0.3) }
+.profile-btn.active.emp { background: var(--grad2) }
+
+/* Empresa packages */
+.planos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px }
+.plano-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 36px 32px; position: relative; overflow: hidden;
+  transition: transform .3s, border-color .3s;
+}
+.plano-card:hover { transform: translateY(-6px) }
+.plano-card.popular { border-color: var(--teal); box-shadow: 0 0 60px rgba(0,212,200,0.15) }
+.popular-badge {
+  position: absolute; top: 20px; right: 20px; background: var(--grad); color: #fff;
+  font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  padding: 4px 12px; border-radius: 20px;
+}
+.plano-name { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px }
+.plano-price { font-size: 52px; font-weight: 900; line-height: 1; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px }
+.plano-price sup { font-size: 22px; font-weight: 700 }
+.plano-unit { font-size: 13px; color: var(--muted); margin-bottom: 8px }
+.plano-min { font-size: 12px; color: var(--teal); font-weight: 700; margin-bottom: 28px }
+.plano-divider { height: 1px; background: var(--border); margin-bottom: 24px }
+.plano-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px }
+.plano-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dark); font-weight: 500 }
+.plano-feat::before { content: '✓'; color: var(--teal); font-weight: 900; font-size: 14px; flex-shrink: 0 }
+.plano-feat.no { color: var(--muted) }
+.plano-feat.no::before { content: '–'; color: rgba(255,255,255,0.2) }
+.plano-btn { display: block; text-align: center; text-decoration: none; padding: 14px; border-radius: 30px; font-size: 14px; font-weight: 700; transition: all .25s }
+.plano-card.popular .plano-btn { background: var(--grad); color: #fff; box-shadow: 0 0 32px rgba(0,212,200,0.35) }
+.plano-card.popular .plano-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,212,200,0.5) }
+.plano-card:not(.popular) .plano-btn { border: 1.5px solid var(--border); color: var(--mid) }
+.plano-card:not(.popular) .plano-btn:hover { border-color: var(--teal); color: var(--teal) }
+
+/* Service filter tabs */
+.svc-filters {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 32px;
+}
+.svc-filter {
+  padding: 8px 20px; border-radius: 30px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--muted); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px;
+}
+.svc-filter:hover { border-color: rgba(0,188,200,0.4); color: var(--dark) }
+.svc-filter.active { border-color: var(--teal); background: rgba(0,212,200,0.1); color: var(--teal) }
+.svc-filter[data-filter="apps"].active { border-color: #f97316; background: rgba(249,115,22,0.1); color: #fb923c }
+.svc-filter[data-filter="eng"].active  { border-color: var(--purple); background: rgba(139,92,246,0.1); color: #c4b5fd }
+.svc-filter[data-filter="ux"].active   { border-color: #ec4899; background: rgba(236,72,153,0.1); color: #f9a8d4 }
+
+/* Cores por serviço ativo */
+.calc-wrap.theme-pbi  .calc-cat-lbl { color: #00bcc8 }
+.calc-wrap.theme-apps .calc-cat-lbl { color: #e67e22 }
+.calc-wrap.theme-eng  .calc-cat-lbl { color: #2d5a3d }
+.calc-wrap.theme-ux   .calc-cat-lbl { color: #c0392b }
+
+.calc-wrap.theme-pbi  .calc-item:hover { border-color: rgba(0,188,200,0.5) }
+.calc-wrap.theme-apps .calc-item:hover { border-color: rgba(230,126,34,0.5) }
+.calc-wrap.theme-eng  .calc-item:hover { border-color: rgba(45,90,61,0.5) }
+.calc-wrap.theme-ux   .calc-item:hover { border-color: rgba(192,57,43,0.5) }
+
+.calc-wrap.theme-pbi  .calc-item.selected { border-color: #00bcc8; background: rgba(0,188,200,0.07) }
+.calc-wrap.theme-apps .calc-item.selected { border-color: #e67e22; background: rgba(230,126,34,0.07) }
+.calc-wrap.theme-eng  .calc-item.selected { border-color: #2d5a3d; background: rgba(45,90,61,0.07) }
+.calc-wrap.theme-ux   .calc-item.selected { border-color: #c0392b; background: rgba(192,57,43,0.07) }
+
+.calc-wrap.theme-pbi  .calc-item.selected .calc-cb { background: #00bcc8; border-color: #00bcc8 }
+.calc-wrap.theme-apps .calc-item.selected .calc-cb { background: #e67e22; border-color: #e67e22 }
+.calc-wrap.theme-eng  .calc-item.selected .calc-cb { background: #2d5a3d; border-color: #2d5a3d }
+.calc-wrap.theme-ux   .calc-item.selected .calc-cb { background: #c0392b; border-color: #c0392b }
+
+.calc-wrap.theme-pbi  .price-badge.prof { background: rgba(0,188,200,0.12); border-color: rgba(0,188,200,0.3); color: #00bcc8 }
+.calc-wrap.theme-apps .price-badge.prof { background: rgba(230,126,34,0.12); border-color: rgba(230,126,34,0.3); color: #e67e22 }
+.calc-wrap.theme-eng  .price-badge.prof { background: rgba(45,90,61,0.12); border-color: rgba(45,90,61,0.3); color: #2d5a3d }
+.calc-wrap.theme-ux   .price-badge.prof { background: rgba(192,57,43,0.12); border-color: rgba(192,57,43,0.3); color: #c0392b }
+
+/* Calculadora */
+.calc-wrap { display: flex; gap: 36px; align-items: flex-start; max-width: 1200px; margin: 0 auto }
+.calc-services { flex: 1 }
+.calc-cat-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--teal); margin: 28px 0 12px;
+}
+.calc-cat-lbl:first-child { margin-top: 0 }
+.calc-cat-lbl.hidden, .calc-grid.hidden { display: none }
+.calc-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px }
+.calc-item {
+  display: flex; gap: 12px; background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 14px 16px; cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .2s; user-select: none;
+}
+.calc-item:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-2px) }
+.calc-item.selected { border-color: var(--teal); background: rgba(0,212,200,0.07); box-shadow: 0 0 20px rgba(0,212,200,0.12) }
+.calc-item[data-svc="apps"]:hover { border-color: rgba(249,115,22,0.4) }
+.calc-item[data-svc="apps"].selected { border-color: #f97316; background: rgba(249,115,22,0.07) }
+.calc-item[data-svc="eng"]:hover  { border-color: rgba(139,92,246,0.4) }
+.calc-item[data-svc="eng"].selected  { border-color: var(--purple); background: rgba(139,92,246,0.07) }
+.calc-item[data-svc="ux"]:hover  { border-color: rgba(236,72,153,0.4) }
+.calc-item[data-svc="ux"].selected  { border-color: #ec4899; background: rgba(236,72,153,0.07) }
+
+.calc-cb {
+  width: 20px; height: 20px; min-width:20px; border-radius: 6px;
+  border: 2px solid var(--border); background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; font-size: 11px; margin-top: 2px;
+}
+.calc-item.selected .calc-cb { background: var(--teal); border-color: var(--teal); color: #000 }
+.calc-item[data-svc="apps"].selected .calc-cb { background: #f97316; border-color: #f97316 }
+.calc-item[data-svc="eng"].selected  .calc-cb { background: var(--purple); border-color: var(--purple) }
+.calc-item[data-svc="ux"].selected   .calc-cb { background: #ec4899; border-color: #ec4899 }
+
+.calc-info { flex: 1; min-width: 0 }
+.calc-svc-name { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 3px }
+.calc-svc-desc { font-size: 11px; color: var(--muted); line-height: 1.45; margin-bottom: 8px }
+
+/* Dual price row */
+.calc-prices { display: flex; gap: 8px; flex-wrap: wrap }
+.price-badge {
+  display: flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700;
+  border: 1px solid transparent; transition: all .25s;
+}
+.price-badge.prof {
+  background: rgba(0,212,200,0.08); border-color: rgba(0,212,200,0.2); color: var(--teal);
+}
+.price-badge.emp {
+  background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.2); color: #c4b5fd;
+}
+.price-badge.active-prof { background: rgba(0,212,200,0.2); border-color: var(--teal); transform: scale(1.05) }
+.price-badge.active-emp  { background: rgba(139,92,246,0.2); border-color: var(--purple); transform: scale(1.05) }
+.price-badge.dim { opacity: .35 }
+.price-badge.emp { display: none !important }
+.price-badge-hrs { font-size: 10px; color: var(--muted); align-self: center; margin-left: 2px }
+
+/* Painel resumo */
+.calc-summary {
+  width: 300px; flex-shrink: 0; position: sticky; top: 88px;
+  background: var(--card); border: 1.5px solid var(--border); border-radius: 24px; padding: 28px;
+}
+.calc-sum-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px }
+.calc-sum-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; max-height: 240px; overflow-y: auto }
+.calc-sum-row { display: flex; justify-content: space-between; font-size: 12px }
+.calc-sum-row span:first-child { color: var(--muted) }
+.calc-sum-row span:last-child { font-weight: 700; color: var(--dark) }
+.calc-sum-divider { height: 1px; background: var(--border); margin: 14px 0 }
+.calc-rate-info { font-size: 12px; color: var(--muted); margin-bottom: 4px }
+.calc-rate-val { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 14px }
+.calc-total-label { font-size: 12px; color: var(--muted); margin-bottom: 4px }
+.calc-total-val { font-size: 42px; font-weight: 900; line-height: 1; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.calc-total-val sup { font-size: 18px }
+.calc-discount-badge {
+  display: none; margin-top: 10px;
+  background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.4);
+  border-radius: 10px; padding: 8px 12px; font-size: 12px; color: #c4b5fd; font-weight: 700;
+}
+.calc-discount-badge.show { display: block }
+.calc-cta {
+  display: block; text-align: center; text-decoration: none; margin-top: 20px;
+  padding: 13px; border-radius: 30px; font-size: 14px; font-weight: 700;
+  background: var(--grad); color: #fff; box-shadow: 0 0 24px rgba(0,212,200,0.3); transition: all .25s;
+}
+.calc-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,200,0.45) }
+.calc-cta-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; line-height: 1.5 }
+.calc-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 20px 0 }
+.calc-item.hidden { display: none }
+
+/* ══ PAGAMENTO ══ */
+.pay-section { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border) }
+.pay-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px }
+.pay-opts { display: flex; flex-direction: column; gap: 8px }
+.pay-opt {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--border);
+  transition: all .2s; user-select: none;
+}
+.pay-opt:hover { border-color: var(--teal) }
+.pay-opt.active { border-color: var(--teal); background: rgba(0,188,200,0.06) }
+.pay-opt input[type=radio] { display: none }
+.pay-opt-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px }
+.pay-opt-info { flex: 1 }
+.pay-opt-name { font-size: 13px; font-weight: 700; color: var(--dark) }
+.pay-opt-desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4 }
+.pay-opt-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  background: rgba(0,188,200,0.12); color: var(--teal); white-space: nowrap;
+  align-self: center; flex-shrink: 0;
+}
+.pay-installment {
+  display: none; margin-top: 10px; padding: 8px 12px;
+  background: rgba(45,90,61,0.06); border-radius: 10px; border: 1px solid rgba(45,90,61,0.15);
+  font-size: 12px; color: var(--mid); font-weight: 600; text-align: center;
+}
+.pay-installment.show { display: block }
+
+/* ══ DIFERENCIAIS ══ */
+#diferenciais { background: var(--bg) }
+.dif-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px }
+.dif-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 32px 28px;
+  transition: border-color .3s, transform .3s;
+}
+.dif-card:hover { border-color: rgba(0,212,200,0.25); transform: translateY(-4px) }
+.dif-icon-wrap {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(0,212,200,0.08); border: 1px solid rgba(0,212,200,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 18px;
+}
+.dif-title { font-size: 17px; font-weight: 800; margin-bottom: 10px }
+.dif-desc { font-size: 13px; color: var(--muted); line-height: 1.65 }
+
+/* ══ SETORES ══ */
+#setores { background: var(--bg2); padding: 80px 60px }
+.setores-strip {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  justify-content: center; max-width: 1100px; margin: 0 auto;
+}
+.setor-pill {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 22px; border-radius: 50px;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: 13px; font-weight: 600; color: var(--dark);
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+  cursor: default;
+}
+.setor-pill:hover {
+  border-color: var(--teal); transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,212,200,0.12);
+}
+.setor-pill-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.setor-pill-icon.teal  { background: rgba(0,212,200,0.15) }
+.setor-pill-icon.blue  { background: rgba(61,142,248,0.15) }
+.setor-pill-icon.purple{ background: rgba(139,92,246,0.15) }
+.setor-pill-icon.orange{ background: rgba(249,115,22,0.15) }
+
+/* ══ STACKS ══ */
+#tecnologias { background: var(--bg2); padding: 80px 60px }
+.stack-title { text-align: center; font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px }
+.stacks-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; max-width: 1200px; margin: 0 auto }
+.stack-group { }
+.stack-group-name {
+  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--teal); margin-bottom: 16px;
+}
+.stack-tags { display: flex; flex-wrap: wrap; gap: 8px }
+.stk {
+  background: rgba(0,188,200,0.04); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 14px;
+  font-size: 13px; font-weight: 600; color: var(--mid);
+  transition: all .2s;
+}
+.stk:hover { background: rgba(0,188,200,0.1); border-color: rgba(0,188,200,0.3); color: var(--dark) }
+
+/* ══ CTA ══ */
+#cta {
+  padding: 120px 60px; text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,200,0.1) 0%, transparent 70%),
+              var(--bg);
+  position: relative; overflow: hidden;
+}
+#cta::before {
+  content: 'DATA FL'; position: absolute; font-size: 280px; font-weight: 900;
+  opacity: 0.02; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  letter-spacing: -10px; pointer-events: none; white-space: nowrap;
+}
+.cta-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1 }
+.cta-title { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px }
+.cta-title .g { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.cta-desc { font-size: 18px; color: var(--muted); line-height: 1.7; margin-bottom: 48px }
+.cta-btns { display: flex; gap: 16px; justify-content: center }
+.cta-note { margin-top: 24px; font-size: 13px; color: var(--muted) }
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 56px 60px 40px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto }
+.footer-top {
+  display: grid; grid-template-columns: 280px 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;
+}
+.footer-brand { }
+.footer-logo {
+  font-size: 22px; font-weight: 900;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+.footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px }
+.footer-social { display: flex; gap: 10px }
+.fsoc {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(0,188,200,0.05); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; text-decoration: none; transition: all .2s;
+}
+.fsoc:hover { background: rgba(0,212,200,0.15); border-color: rgba(0,212,200,0.3) }
+.footer-col-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; color: var(--mid) }
+.footer-links { display: flex; flex-direction: column; gap: 10px }
+.footer-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s }
+.footer-links a:hover { color: var(--teal) }
+.footer-divider { height: 1px; background: var(--border); margin-bottom: 28px }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center }
+.footer-copy { font-size: 13px; color: var(--muted) }
+.footer-copy span { color: var(--teal) }
+
+/* ══ CONTADOR ══ */
+.counter { display: inline-block }
+
+/* ══ RESPONSIVE COMPLETO ══ */
+
+/* Tablet landscape & small desktop */
+@media (max-width: 1100px) {
+  nav { padding: 0 32px }
+  .hero-inner { gap: 48px }
+  .hero-title { font-size: 52px }
+  .stacks-grid { grid-template-columns: repeat(2,1fr) }
+  .calc-wrap { flex-direction: column }
+  .calc-summary { width: 100%; position: static; max-width: 100% }
+  .calc-grid { grid-template-columns: repeat(2,1fr) }
+}
+
+/* Tablet portrait */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; height: 60px }
+  .nav-links { display: none }
+  .nav-cta { padding: 8px 18px; font-size: 12px }
+
+  .hero { padding: 88px 20px 56px }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px }
+  .hero-visual { display: none }
+  .hero-title { font-size: 42px; letter-spacing: -1.5px }
+  .hero-sub { font-size: 16px }
+  .hero-desc { font-size: 15px }
+  .hero-btns { flex-direction: column; gap: 12px }
+  .btn-primary, .btn-secondary { text-align: center; padding: 14px 28px }
+  .hero-stats { gap: 24px }
+  .hstat-val { font-size: 26px }
+
+  section { padding: 64px 20px }
+  .sec-title { font-size: 34px; letter-spacing: -1px }
+  .sec-head { margin-bottom: 40px }
+
+  .srv-grid { grid-template-columns: 1fr; gap: 20px }
+  .srv-block { padding: 28px 24px }
+  .srv-name { font-size: 20px }
+
+  .steps { grid-template-columns: 1fr 1fr; gap: 20px }
+  .step::after { display: none }
+
+  .profile-toggle { flex-direction: column; border-radius: 20px; width: 100%; max-width: 340px }
+  .profile-btn { width: 100%; justify-content: center; padding: 12px 20px }
+  .svc-filters { gap: 6px }
+  .svc-filter { padding: 7px 14px; font-size: 12px }
+
+  .calc-wrap { flex-direction: column; gap: 24px }
+  .calc-grid { grid-template-columns: 1fr }
+  .calc-summary { width: 100%; position: static; border-radius: 16px }
+
+  .planos-grid { grid-template-columns: 1fr; gap: 16px }
+  .dif-grid { grid-template-columns: 1fr; gap: 16px }
+
+  .setores-strip { gap: 10px }
+  .setor-pill { padding: 10px 16px; font-size: 12px }
+
+  .stacks-grid { grid-template-columns: 1fr; gap: 28px }
+  #tecnologias { padding: 64px 20px }
+  #setores { padding: 56px 20px }
+
+  .cta-title { font-size: 36px; letter-spacing: -1px }
+  .cta-desc { font-size: 16px }
+  .cta-btns { flex-direction: column; align-items: center }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px }
+  footer { padding: 48px 20px 32px }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .hero { padding: 80px 16px 48px }
+  .hero-title { font-size: 34px; letter-spacing: -1px }
+  .hero-sub { font-size: 14px }
+  .hero-desc { font-size: 14px }
+  .hero-stats { flex-wrap: wrap; gap: 20px }
+  .hstat-val { font-size: 24px }
+  .hstat-lbl { font-size: 11px }
+
+  section { padding: 52px 16px }
+  .sec-title { font-size: 28px }
+  .sec-desc { font-size: 15px }
+
+  .srv-block { padding: 22px 18px }
+  .srv-icon { width: 44px; height: 44px; font-size: 20px }
+  .srv-name { font-size: 18px }
+  .srv-desc { font-size: 13px }
+  .svc-saiba { display: none }
+
+  .steps { grid-template-columns: 1fr }
+  .step-num { width: 56px; height: 56px; font-size: 18px }
+
+  .svc-filters { gap: 6px }
+  .svc-filter { padding: 6px 12px; font-size: 11px }
+  .calc-grid { grid-template-columns: 1fr }
+  .calc-item { padding: 12px 14px }
+  .calc-svc-name { font-size: 12px }
+  .calc-svc-desc { font-size: 10px }
+
+  .profile-toggle { max-width: 100% }
+
+  .cta-title { font-size: 28px }
+  .cta-desc { font-size: 14px; margin-bottom: 32px }
+  .btn-primary, .btn-secondary { font-size: 14px; padding: 13px 24px }
+
+  .footer-top { grid-template-columns: 1fr; gap: 24px }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center }
+
+  .setor-pill { padding: 8px 14px; font-size: 11px }
+  .setor-pill-icon { width: 28px; height: 28px; font-size: 13px }
+
+  .plano-price { font-size: 42px }
+  .dif-card { padding: 24px 20px }
+
+  nav { padding: 0 16px; height: 56px }
+  .nav-cta { padding: 7px 14px; font-size: 12px }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <rect width="36" height="36" rx="10" fill="url(#logoGrad)"/>
+      <rect x="8" y="20" width="4" height="8" rx="2" fill="white" opacity="0.9"/>
+      <rect x="14" y="14" width="4" height="14" rx="2" fill="white"/>
+      <rect x="20" y="10" width="4" height="18" rx="2" fill="white" opacity="0.85"/>
+      <rect x="26" y="16" width="4" height="12" rx="2" fill="white" opacity="0.7"/>
+      <circle cx="10" cy="18" r="2" fill="#faf5c0"/>
+      <circle cx="16" cy="12" r="2" fill="#faf5c0"/>
+      <circle cx="22" cy="8" r="2" fill="#faf5c0"/>
+      <circle cx="28" cy="14" r="2" fill="#faf5c0"/>
+      <path d="M10 18 L16 12 L22 8 L28 14" stroke="#faf5c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36">
+          <stop offset="0%" stop-color="#00bcc8"/>
+          <stop offset="100%" stop-color="#2d5a3d"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:20px;font-weight:900;letter-spacing:-0.5px">Data</span><span style="color:var(--dark);font-size:20px;font-weight:900"> FL</span>
+  </div>
+  <div class="nav-links">
+    <a href="#servicos">Serviços</a>
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#planos">Planos</a>
+    <a href="#tecnologias">Tecnologias</a>
+    <a href="#cta" class="nav-cta">Contratar agora</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Self-service · Contratação por hora
+      </div>
+      <div class="hero-title">
+        Dados que<br>
+        <span class="grad">geram decisão.</span><br>
+        <span class="grad2">Sob demanda.</span>
+      </div>
+      <p class="hero-sub">Power BI · Engenharia de Dados · Power Apps · UX Design</p>
+      <p class="hero-desc">
+        Contrate horas de especialista em dados diretamente, sem burocracia.
+        Dashboards executivos, pipelines robustos e arquitetura de dados — exatamente quando você precisa.
+      </p>
+      <div class="hero-btns">
+        <a href="#planos" class="btn-primary">Contratar por hora →</a>
+        <a href="#servicos" class="btn-secondary">Ver serviços</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hstat-val"><span class="counter" data-target="120">0</span>+</div>
+          <div class="hstat-lbl">Projetos entregues</div>
+        </div>
+        <div>
+          <div class="hstat-val"><span class="counter" data-target="9">0</span> anos</div>
+          <div class="hstat-lbl">de experiência</div>
+        </div>
+        <div>
+          <div class="hstat-val"><span class="counter" data-target="30">0</span>+</div>
+          <div class="hstat-lbl">Clientes atendidos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual animado -->
+    <div class="hero-visual">
+      <div class="hv-glow"></div>
+      <div style="position:relative">
+        <div class="hv-chip" style="top:-24px;right:30px">+18% Receita MoM ↑</div>
+        <div class="hv-card">
+          <div class="hv-card-top">
+            <div class="hv-dots">
+              <div class="hv-dot" style="background:#ff5f56"></div>
+              <div class="hv-dot" style="background:#ffbd2e"></div>
+              <div class="hv-dot" style="background:#27c93f"></div>
+            </div>
+            <div class="hv-title">Painel Executivo · Data FL</div>
+          </div>
+          <div class="hv-kpis">
+            <div class="hv-kpi">
+              <div class="hv-kval">R$4,2M</div>
+              <div class="hv-klbl">Receita Total</div>
+            </div>
+            <div class="hv-kpi">
+              <div class="hv-kval">94%</div>
+              <div class="hv-klbl">SLA Cumprido</div>
+            </div>
+            <div class="hv-kpi">
+              <div class="hv-kval">+31%</div>
+              <div class="hv-klbl">vs Ano Ant.</div>
+            </div>
+          </div>
+          <div class="hv-bars">
+            <div class="hv-bar-row">
+              <div class="hv-blbl">Power BI</div>
+              <div class="hv-btrack"><div class="hv-bfill" style="width:92%" id="b1"></div></div>
+              <div class="hv-bpct">92%</div>
+            </div>
+            <div class="hv-bar-row">
+              <div class="hv-blbl">Engenharia</div>
+              <div class="hv-btrack"><div class="hv-bfill" style="width:78%;background:var(--grad2)" id="b2"></div></div>
+              <div class="hv-bpct">78%</div>
+            </div>
+            <div class="hv-bar-row">
+              <div class="hv-blbl">Analytics</div>
+              <div class="hv-btrack"><div class="hv-bfill" style="width:85%" id="b3"></div></div>
+              <div class="hv-bpct">85%</div>
+            </div>
+          </div>
+          <div class="hv-line-area">
+            <svg viewBox="0 0 460 80" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="lg1" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#00d4c8" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#00d4c8" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,70 C30,68 50,55 80,48 C110,42 130,50 160,38 C190,26 210,35 240,22 C270,10 295,18 320,12 C345,6 370,14 400,8 C430,2 450,6 460,4 L460,80 L0,80 Z" fill="url(#lg1)"/>
+              <path d="M0,70 C30,68 50,55 80,48 C110,42 130,50 160,38 C190,26 210,35 240,22 C270,10 295,18 320,12 C345,6 370,14 400,8 C430,2 450,6 460,4"
+                fill="none" stroke="url(#lg2)" stroke-width="2.5" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="lg2" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stop-color="#00d4c8"/>
+                  <stop offset="100%" stop-color="#3d8ef8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div class="hv-chip2" style="bottom:-20px;left:20px">⚡ Pipeline executado · 2s</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVIÇOS ══ -->
+<section id="servicos">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">O que entregamos</div>
+      <div class="sec-title">Dois pilares.<br><span class="g">Uma solução completa.</span></div>
+      <p class="sec-desc">Do dado bruto ao painel executivo — Power BI, Engenharia de Dados, Power Apps e UX Design em um único lugar, por hora, sem contrato de longo prazo.</p>
+    </div>
+    <div class="srv-grid">
+
+      <!-- Power BI -->
+      <div class="srv-block bi">
+        <div class="srv-glow-bg"></div>
+        <div class="srv-icon">📊</div>
+        <div class="srv-name">Power BI</div>
+        <p class="srv-desc">Dashboards executivos, relatórios analíticos e modelos semânticos construídos com as melhores práticas de DAX, modelagem dimensional e UX de dados.</p>
+        <div class="srv-items">
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Dashboard Executivo & Operacional<span>KPIs, scorecards, painéis com drill-through</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Modelagem DAX Avançada<span>Time intelligence, comparativos YoY/MoM</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Modelo Semântico & Star Schema<span>Performance e escalabilidade</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Publicação, Segurança & RLS<span>Deploy, workspaces e Row-Level Security</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Migração & Refatoração<span>Relatórios legados, melhoria de performance</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+        </div>
+        <div class="srv-tag">Power BI · DAX · Power Query</div>
+      </div>
+
+      <!-- Engenharia de Dados -->
+      <div class="srv-block eng">
+        <div class="srv-glow-bg"></div>
+        <div class="srv-icon">⚙️</div>
+        <div class="srv-name">Engenharia de Dados</div>
+        <p class="srv-desc">Pipelines robustos, warehouses bem estruturados e integrações confiáveis — a fundação que garante que seus dados cheguem certos, no tempo certo.</p>
+        <div class="srv-items">
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">ETL / ELT & Pipelines<span>Dataflows, Fabric, Alteryx</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Data Warehouse & Lakehouse<span>Snowflake, Databricks, Microsoft Fabric</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">SQL Avançado & Stored Procedures<span>SQL Server, MySQL, PostgreSQL</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Integração de Sistemas & APIs<span>REST APIs, SAP, CRMs e ERPs</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Governança & Qualidade de Dados<span>Catálogo, linhagem, validações</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+        </div>
+        <div class="srv-tag">SQL · Fabric · Databricks · Alteryx</div>
+      </div>
+
+      <!-- Power Apps -->
+      <div class="srv-block apps">
+        <div class="srv-glow-bg"></div>
+        <div class="srv-icon">⚡</div>
+        <div class="srv-name">Power Apps</div>
+        <p class="srv-desc">Aplicações de baixo código que automatizam processos, eliminam planilhas manuais e conectam pessoas aos dados — sem precisar de uma equipe de desenvolvimento.</p>
+        <div class="srv-items">
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Canvas Apps (formulários & telas)<span>SharePoint, SQL ou Dataverse</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Model-driven Apps (Dataverse)<span>Tabelas, business rules e dashboards</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Power Automate & fluxos de aprovação<span>E-mails, Teams, sync entre sistemas</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Integração Power Apps ↔ Power BI<span>Visuais BI no app, filtros de contexto</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Power Pages / Portais externos<span>Sites externos com autenticação Dataverse</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+        </div>
+        <div class="srv-tag">Power Apps · Power Automate · Dataverse</div>
+      </div>
+
+      <!-- UX / Designer -->
+      <div class="srv-block ux">
+        <div class="srv-glow-bg"></div>
+        <div class="srv-icon">🎨</div>
+        <div class="srv-name">UX / Designer</div>
+        <p class="srv-desc">Layouts de dashboards com foco em experiência do usuário — do wireframe ao tema final. Relatórios que comunicam, não apenas exibem números.</p>
+        <div class="srv-items">
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Wireframe & prototipação (Figma/draw.io)<span>Hierarquia visual e fluxo de leitura</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Tema customizado Power BI (.json)<span>Paleta corporativa, fontes, visuais padrão</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Design system para dashboards<span>Cards KPI, paleta, tipografia corporativa</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Backgrounds, ícones & elementos visuais<span>SVG, ícones de navegação, branding</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+          <div class="srv-item">
+            <div class="srv-item-dot"></div>
+            <div class="srv-item-text">Auditoria de UX / redesign de relatório<span>Legibilidade, hierarquia e cores</span></div>
+            <a href="#planos" class="svc-saiba">Saiba mais →</a>
+          </div>
+        </div>
+        <div class="srv-tag">Figma · Power BI Themes · SVG · Design System</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMO FUNCIONA ══ -->
+<section id="como-funciona">
+  <div class="sec-inner">
+    <div class="sec-head" style="text-align:center">
+      <div class="sec-label" style="text-align:center">Self-service</div>
+      <div class="sec-title" style="text-align:center;max-width:100%">Como contratar em <span class="g">4 passos</span></div>
+      <p class="sec-desc" style="margin:0 auto;text-align:center">Sem reuniões desnecessárias, sem contratos longos. Você escolhe o serviço, reserva as horas e começamos.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🎯</div>
+        <div class="step-title">Escolha o serviço</div>
+        <p class="step-desc">Selecione entre Power BI ou Engenharia de Dados e descreva o que precisa em poucas linhas.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">⏱️</div>
+        <div class="step-title">Reserve as horas</div>
+        <p class="step-desc">Escolha o pacote de horas ideal pro seu projeto. Pague só o que usar, com preço fixo por hora.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🚀</div>
+        <div class="step-title">Começamos em 24h</div>
+        <p class="step-desc">Após confirmação, iniciamos a execução em até 24 horas com alinhamento rápido por meet ou mensagem.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon">✅</div>
+        <div class="step-title">Entrega & revisão</div>
+        <p class="step-desc">Entregamos com documentação, apresentamos o resultado e incluímos rodada de ajustes no pacote.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PLANOS ══ -->
+<section id="planos">
+  <div class="sec-inner">
+    <div class="sec-head" style="text-align:center">
+      <div class="sec-label" style="text-align:center">Preços</div>
+      <div class="sec-title" style="text-align:center;max-width:100%">Transparência total <span class="g">no valor</span></div>
+      <p class="sec-desc" style="margin:0 auto;text-align:center">Selecione seu perfil, filtre pelo serviço e veja o custo estimado de cada item — para os dois cenários.</p>
+    </div>
+
+    <!-- Profile toggle -->
+    <div class="profile-toggle">
+      <button class="profile-btn active" id="btn-prof" onclick="setProfile('prof',this)">👤 Profissional</button>
+      <button class="profile-btn emp"    id="btn-emp"  onclick="setProfile('emp',this)">🏢 Empresa &nbsp;<small style="font-weight:400;opacity:.7">Escopo fechado</small></button>
+    </div>
+
+    <!-- Empresa notice -->
+    <div id="emp-notice" style="display:none;text-align:center;margin-bottom:28px;padding:20px 32px;background:rgba(45,90,61,0.06);border:1px solid rgba(45,90,61,0.2);border-radius:16px;max-width:680px;margin-left:auto;margin-right:auto">
+      <div style="font-size:16px;font-weight:800;color:var(--mid);margin-bottom:6px">🏢 Para empresas, trabalhamos com escopo fechado</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6">O projeto é orçado e entregue com escopo, prazo e valor definidos. Escolha abaixo o pacote mais adequado ao seu projeto.</p>
+    </div>
+
+    <!-- Service filter -->
+    <div class="svc-filters" id="svc-filters-wrap">
+      <button class="svc-filter active" data-filter="all"  onclick="filterSvc('all',this)">🔍 Todos</button>
+      <button class="svc-filter"        data-filter="pbi"  onclick="filterSvc('pbi',this)">📊 Power BI</button>
+      <button class="svc-filter"        data-filter="apps" onclick="filterSvc('apps',this)">⚡ Power Apps</button>
+      <button class="svc-filter"        data-filter="eng"  onclick="filterSvc('eng',this)">⚙️ Engenharia</button>
+      <button class="svc-filter"        data-filter="ux"   onclick="filterSvc('ux',this)">🎨 UX Designer</button>
+    </div>
+
+    <!-- Calculator -->
+    <div class="calc-wrap" id="calc-wrap-main">
+      <div class="calc-services">
+
+        <!-- ─── PBI: Fontes & Conexões ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">📊 Power BI — Fontes &amp; Conexões</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Conexão CSV / Excel / TXT</div><div class="calc-svc-desc">Importação de arquivos flat com ajuste de delimitadores, encoding e caminho dinâmico.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Conexão banco SQL (Server, MySQL, PG, Oracle)</div><div class="calc-svc-desc">Conexão direta com query nativa, credenciais e modo Import ou DirectQuery.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">API / Web connector (REST/JSON/XML)</div><div class="calc-svc-desc">Integração com autenticação Bearer/OAuth, paginação automática e parsing aninhado.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">SharePoint / OneDrive / Teams</div><div class="calc-svc-desc">Leitura de listas SharePoint e arquivos OneDrive com atualização automática.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">SAP connector (BW, HANA, Business One)</div><div class="calc-svc-desc">Conexão via conector nativo ou gateway, extração de InfoObjects e queries BEx.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Dataflows Gen1 / Gen2 como fonte</div><div class="calc-svc-desc">Dataflows reutilizáveis no serviço Power BI ou Fabric para centralizar transformações.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Fabric / Lakehouse connector</div><div class="calc-svc-desc">Conexão ao Microsoft Fabric via SQL endpoint e leitura de tabelas Delta no Lakehouse.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Google Sheets / Analytics / Ads</div><div class="calc-svc-desc">Importação de planilhas Google, métricas Analytics 4 e campanhas Google Ads com OAuth.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: Power Query ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🔄 Power Query &amp; Transformações</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Transformações básicas em M</div><div class="calc-svc-desc">Filtros, renomear, tipagem, duplicatas, trim e substituição de nulos com boas práticas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Merge / Append de consultas</div><div class="calc-svc-desc">Combinação de tabelas por chaves (inner, left, outer) e empilhamento de origens.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Unpivot / Pivot de colunas</div><div class="calc-svc-desc">Normalização wide→long (unpivot) e pivot com agrupamentos dinâmicos.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Parâmetros e funções reutilizáveis (M)</div><div class="calc-svc-desc">Parâmetros dinâmicos de data/ambiente e funções M encapsuladas para lógica repetida.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Refresh incremental via Power Query</div><div class="calc-svc-desc">Política RangeStart/RangeEnd, particionamento por data e preservação de histórico.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tratamento de erros e valores nulos</div><div class="calc-svc-desc">Estratégias para null, erros de tipo, registros incompletos sem quebrar o refresh.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: Modelagem ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🔗 Modelagem Dimensional</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Relacionamento de tabelas</div><div class="calc-svc-desc">Criação de relacionamentos fato/dimensão, cardinalidade, direção do filtro e ambiguidades.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="3" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Star Schema / Modelagem dimensional</div><div class="calc-svc-desc">Estrutura em estrela completa com fato, dimensões, chaves substitutas e hierarquias.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$300</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tabela calendário completa (dCalendário)</div><div class="calc-svc-desc">Criação em DAX ou M com ano, mês, semana, dia útil e feriados customizáveis.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tabela de medidas organizada</div><div class="calc-svc-desc">Tabela vazia centralizada, organização em pastas de exibição e padronização de nomenclatura.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Composite Model (Import + DirectQuery)</div><div class="calc-svc-desc">Modelo híbrido com Import para agregações e DirectQuery para detalhe, com agregações automáticas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Otimização de performance do modelo</div><div class="calc-svc-desc">DAX Studio + VertiPaq Analyzer: remoção de colunas, correção de tipos, substituição por medidas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: DAX ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🧮 DAX &amp; Cálculos</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Medidas básicas (SUM, COUNT, AVERAGE…)</div><div class="calc-svc-desc">Aggregações, contagens distintas, percentuais simples e totalizadores com boas práticas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="3" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">DAX avançado / Time Intelligence</div><div class="calc-svc-desc">CALCULATE, FILTER, ALL, ALLSELECTED, SAMEPERIODLASTYEAR, DATEADD, TOTALYTD e variações.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$300</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Variações YoY / MoM / QoQ / YTD</div><div class="calc-svc-desc">Comparativos de período com variação absoluta, percentual e acumulado ano/mês/trimestre.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">KPIs financeiros customizados</div><div class="calc-svc-desc">Margem bruta, EBITDA, ticket médio, LTV, CAC, churn, ROI e indicadores do negócio.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Ranking, Pareto e Análise ABC</div><div class="calc-svc-desc">Classificação dinâmica com RANKX, curva de Pareto acumulada e segmentação ABC.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">SWITCH dinâmico / seletor de medida</div><div class="calc-svc-desc">Campo de parâmetro ou SWITCH para alternar métricas via slicer sem duplicar visuais.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tabelas calculadas em DAX</div><div class="calc-svc-desc">SUMMARIZE, ADDCOLUMNS, CROSSJOIN, UNION e GENERATEALL para tabelas derivadas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Revisão e auditoria de DAX existente</div><div class="calc-svc-desc">Identificação de erros lógicos, redundâncias, problemas de contexto e reescrita otimizada.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: Visualização ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🎨 Visualização &amp; Relatórios</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="3" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Dashboard executivo completo</div><div class="calc-svc-desc">Relatório multi-página com KPIs, tendências, tabelas de ranking, drill-through e navegação.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$300</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="4" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Relatório Paginado (SSRS / RDL)</div><div class="calc-svc-desc">Relatórios para impressão/PDF com tabelas complexas, sub-relatórios e parâmetros.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$400</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Filtros, slicers &amp; drill-through</div><div class="calc-svc-desc">Segmentações sincronizadas, filtros cruzados, drill-through e painel de filtros customizado.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Bookmarks, botões &amp; navegação</div><div class="calc-svc-desc">Painéis com navegação por botões, pop-ups via bookmarks e alternância de visuais.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Visuais customizados AppSource / Deneb</div><div class="calc-svc-desc">Bullet Chart, Charticulator, Small Multiples e gráficos Vega-Lite via Deneb.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tooltips customizadas &amp; drill-down</div><div class="calc-svc-desc">Tooltip de relatório (página como tooltip) e hierarquias de drill-down/up em gráficos.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Layout mobile (Power BI Mobile)</div><div class="calc-svc-desc">Layout responsivo para dispositivos, reorganização de visuais e ajuste para o app.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Formatação condicional &amp; indicadores</div><div class="calc-svc-desc">Cores, ícones, barras de dados em tabelas, KPI cards com setas e semáforos por faixa.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: Deploy & Serviço ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🚀 Deploy &amp; Serviço Power BI</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Publicação e deploy no serviço</div><div class="calc-svc-desc">Deploy do .pbix no workspace, permissões e compartilhamento por link ou app publicado.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Deployment Pipeline (Dev/Test/Prod)</div><div class="calc-svc-desc">Pipeline de implantação com estágios Dev/Teste/Produção, regras e histórico de versões.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Agendamento de refresh automático</div><div class="calc-svc-desc">Setup de refresh horário/diário/incremental, credenciais e alertas de falha.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Embed SharePoint / Teams / Site</div><div class="calc-svc-desc">Incorporação em SharePoint, canal Teams ou site externo via iframe ou API de embedding.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="3" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Power BI Embedded (app externo)</div><div class="calc-svc-desc">Integração via API REST e SDK JavaScript para relatórios em aplicações próprias.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$300</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Metas &amp; Scorecards (Goals)</div><div class="calc-svc-desc">Scorecards com metas conectadas a medidas, responsáveis e acompanhamento de status.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+        </div>
+
+        <!-- ─── PBI: Segurança ─── -->
+        <div class="calc-cat-lbl" data-svc="pbi">🔒 Segurança &amp; Governança Power BI</div>
+        <div class="calc-grid" data-svc="pbi">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">RLS estático e dinâmico</div><div class="calc-svc-desc">Row-Level Security com roles fixas ou USERNAME()/USERPRINCIPALNAME() e testes por perfil.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="2" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">OLS — Segurança em nível de objeto</div><div class="calc-svc-desc">Object-Level Security para ocultar tabelas/colunas de roles específicas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$200</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Workspaces &amp; Gateway on-premises</div><div class="calc-svc-desc">Organização de workspaces, gateway para fontes locais e cluster de alta disponibilidade.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="pbi" data-hrs="1" data-emp-rate="99.90"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Usage Metrics &amp; auditoria de acesso</div><div class="calc-svc-desc">Análise de uso do serviço, relatórios obsoletos, usuários ativos e padrões de consumo.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$100</span><span class="price-badge-hrs">1h</span></div></div></div>
+        </div>
+
+        <!-- ─── POWER APPS ─── -->
+        <div class="calc-cat-lbl" data-svc="apps">⚡ Power Apps &amp; Automação</div>
+        <div class="calc-grid" data-svc="apps">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="4" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Canvas App (formulários e telas)</div><div class="calc-svc-desc">App de canvas com listagem, detalhe e formulário, conectado a SharePoint, SQL ou Dataverse.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$560</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="4" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Model-driven App (Dataverse)</div><div class="calc-svc-desc">App orientado a dados com tabelas Dataverse, formulários, views e business rules.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$560</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="4" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Power Pages / Portal externo</div><div class="calc-svc-desc">Portal para usuários externos com autenticação, formulários e tabelas do Dataverse.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$560</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="3" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Power Automate / fluxos de aprovação</div><div class="calc-svc-desc">Automação de e-mails, notificações Teams, sync entre sistemas e gatilhos por evento.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$420</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="3" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Custom connectors (APIs próprias)</div><div class="calc-svc-desc">Conector customizado no Power Platform para APIs internas, com autenticação e actions.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$420</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="2" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Integração Power Apps ↔ Power BI</div><div class="calc-svc-desc">Embutir visuais BI no Canvas App, passar filtros de contexto entre as plataformas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$280</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="apps" data-hrs="2" data-emp-rate="140"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Integração SharePoint &amp; Teams</div><div class="calc-svc-desc">Leitura/escrita em listas SharePoint, publicação no Teams e tabs customizadas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$280</span><span class="price-badge-hrs">2h</span></div></div></div>
+        </div>
+
+        <!-- ─── ENGENHARIA ─── -->
+        <div class="calc-cat-lbl" data-svc="eng">⚙️ Engenharia de Dados</div>
+        <div class="calc-grid" data-svc="eng">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="4" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">ETL / Pipeline completo</div><div class="calc-svc-desc">Pipeline de extração, transformação e carga com Dataflows, ADF, Fabric ou Alteryx.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$640</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="3" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Integração de APIs externas</div><div class="calc-svc-desc">Ingestão REST: autenticação OAuth/Bearer, paginação, rate limit e persistência em Lakehouse.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$480</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="2" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">SQL avançado / Stored procedures</div><div class="calc-svc-desc">Views, procedures, CTEs, window functions, particionamento e otimização de índices.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$320</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="4" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Data Warehouse / Lakehouse</div><div class="calc-svc-desc">Camadas Bronze/Silver/Gold no Fabric ou Databricks, padrões de ingestão e Delta tables.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$160</span><span class="price-badge emp">🏢 ~R$640</span><span class="price-badge-hrs">4h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="2" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Governança &amp; qualidade de dados</div><div class="calc-svc-desc">Regras de qualidade (completude, unicidade), checks no pipeline e alertas de anomalia.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$320</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="eng" data-hrs="1" data-emp-rate="160"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Documentação técnica</div><div class="calc-svc-desc">Dicionário de dados, mapeamento de fontes e manual de atualização para equipe interna.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$160</span><span class="price-badge-hrs">1h</span></div></div></div>
+        </div>
+
+        <!-- ─── UX DESIGNER ─── -->
+        <div class="calc-cat-lbl" data-svc="ux" style="border-left:3px solid #ec4899;padding-left:10px;border-radius:4px;background:rgba(236,72,153,0.06)">✦ UX / Designer — Layouts de Dashboards</div>
+        <div class="calc-grid" data-svc="ux">
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="2" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Wireframe &amp; prototipação (Figma)</div><div class="calc-svc-desc">Esboço estrutural das páginas: hierarquia visual, posicionamento de KPIs e fluxo de leitura.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$240</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="3" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Design system para dashboards</div><div class="calc-svc-desc">Componentes padronizados: cards KPI, paleta, tipografia e guia de uso para toda a empresa.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$360</span><span class="price-badge-hrs">3h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="2" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Tema customizado Power BI (.json)</div><div class="calc-svc-desc">Arquivo de tema com paleta corporativa, fontes e formatação padrão de todos os visuais.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$240</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="2" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Layout responsivo (Mobile + Desktop)</div><div class="calc-svc-desc">Design adaptado para telas desktop 16:9 e Power BI Mobile com priorização de KPIs.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$240</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="1" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Paleta de cores &amp; tipografia</div><div class="calc-svc-desc">Paleta cromática acessível (WCAG), hierarquia tipográfica e guia de cores semânticas.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$40</span><span class="price-badge emp">🏢 ~R$120</span><span class="price-badge-hrs">1h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="2" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Backgrounds SVG &amp; ícones customizados</div><div class="calc-svc-desc">Plano de fundo SVG, ícones de navegação e elementos decorativos alinhados ao branding.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$240</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="2" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Revisão e auditoria de UX/UI</div><div class="calc-svc-desc">Análise de legibilidade, hierarquia e cores com relatório de recomendações de melhoria.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$80</span><span class="price-badge emp">🏢 ~R$240</span><span class="price-badge-hrs">2h</span></div></div></div>
+          <div class="calc-item" onclick="toggleCalc(this)" data-svc="ux" data-hrs="3" data-emp-rate="120"><div class="calc-cb">✓</div><div class="calc-info"><div class="calc-svc-name">Template reutilizável (.pbit)</div><div class="calc-svc-desc">Arquivo .pbit com layout, tema e estrutura de medidas prontos para replicar em novos projetos.</div><div class="calc-prices"><span class="price-badge prof">👤 ~R$120</span><span class="price-badge emp">🏢 ~R$360</span><span class="price-badge-hrs">3h</span></div></div></div>
+        </div>
+
+      </div><!-- /calc-services -->
+
+      <!-- Summary panel -->
+      <div class="calc-summary">
+        <div class="calc-sum-title">Seu orçamento</div>
+        <div id="calc-empty" class="calc-empty">← Selecione os serviços para calcular</div>
+        <div id="calc-detail" style="display:none">
+          <div class="calc-sum-rows" id="calc-rows"></div>
+          <div class="calc-sum-divider"></div>
+          <div class="calc-sum-row"><span>Itens selecionados</span><span id="calc-count">0</span></div>
+          <div class="calc-sum-row"><span>Total de horas</span><span id="calc-total-hrs">0h</span></div>
+        </div>
+        <div class="calc-sum-divider"></div>
+        <div class="calc-rate-info" id="calc-rate-info">Taxa aplicada</div>
+        <div class="calc-rate-val" id="calc-rate-val">—</div>
+        <div class="calc-total-label">Total estimado</div>
+        <div class="calc-total-val"><sup>R$</sup><span id="calc-total-val">0</span></div>
+        <div class="calc-discount-badge" id="calc-badge">🎉 5% de desconto aplicado — 3+ serviços!</div>
+        <a href="#cta" class="calc-cta" id="calc-cta-btn" style="opacity:.4;pointer-events:none">💬 Falar via WhatsApp</a>
+        <p class="calc-cta-note">Estimativa baseada em horas médias. Prazo e escopo final alinhados no primeiro contato.</p>
+
+        <!-- Pagamento -->
+        <div class="pay-section">
+          <div class="pay-title">Forma de pagamento</div>
+          <div class="pay-opts">
+            <label class="pay-opt active" id="pay-pix" onclick="setPayment('pix',this)">
+              <input type="radio" name="payment" value="pix" checked>
+              <span class="pay-opt-icon">🏦</span>
+              <div class="pay-opt-info">
+                <div class="pay-opt-name">PIX</div>
+                <div class="pay-opt-desc">5% de desconto com 5+ serviços</div>
+              </div>
+              <span class="pay-opt-badge">-5%</span>
+            </label>
+            <label class="pay-opt" id="pay-card" onclick="setPayment('card',this)">
+              <input type="radio" name="payment" value="card">
+              <span class="pay-opt-icon">💳</span>
+              <div class="pay-opt-info">
+                <div class="pay-opt-name">Cartão de crédito</div>
+                <div class="pay-opt-desc">Parcelado em até 5× sem juros</div>
+              </div>
+            </label>
+          </div>
+          <div class="pay-installment" id="pay-installment-info">
+            5× de <strong id="installment-val">R$0</strong> sem juros
+          </div>
+        </div>
+      </div>
+    </div><!-- /calc-wrap -->
+
+    <!-- Empresa packages note -->
+    <div id="emp-packages" style="display:none;margin-top:52px">
+      <div style="text-align:center;margin-bottom:28px">
+        <div class="sec-label" style="text-align:center">Ou prefira projeto fechado</div>
+        <p style="font-size:14px;color:var(--muted)">Para projetos com escopo definido, escolha um pacote com valor por hora fixado.</p>
+      </div>
+      <div class="planos-grid">
+        <div class="plano-card">
+          <div class="plano-name">Essencial</div>
+          <div class="plano-price"><sup>R$</sup>75</div>
+          <div class="plano-unit">por hora · projeto fechado</div>
+          <div class="plano-min">Mínimo 4 horas</div>
+          <div class="plano-divider"></div>
+          <div class="plano-features">
+            <div class="plano-feat">Dashboard até 5 páginas</div>
+            <div class="plano-feat">Power BI ou ETL simples</div>
+            <div class="plano-feat">1 fonte de dados</div>
+            <div class="plano-feat">Entrega em até 5 dias úteis</div>
+            <div class="plano-feat">1 rodada de revisão</div>
+            <div class="plano-feat no">Modelagem semântica avançada</div>
+          </div>
+          <a href="#cta" class="plano-btn">Contratar agora</a>
+        </div>
+        <div class="plano-card popular">
+          <div class="popular-badge">⚡ Mais contratado</div>
+          <div class="plano-name">Profissional</div>
+          <div class="plano-price" style="font-size:42px"><sup>R$</sup>99<span style="font-size:28px">,90</span></div>
+          <div class="plano-unit">por hora · projeto fechado</div>
+          <div class="plano-min">Mínimo 8 horas</div>
+          <div class="plano-divider"></div>
+          <div class="plano-features">
+            <div class="plano-feat">Dashboard completo ilimitado</div>
+            <div class="plano-feat">Power BI + Engenharia de Dados</div>
+            <div class="plano-feat">Múltiplas fontes de dados</div>
+            <div class="plano-feat">Entrega em até 3 dias úteis</div>
+            <div class="plano-feat">2 rodadas de revisão</div>
+            <div class="plano-feat">Modelagem semântica avançada</div>
+            <div class="plano-feat">Prioridade no atendimento</div>
+          </div>
+          <a href="#cta" class="plano-btn">Contratar agora</a>
+        </div>
+        <div class="plano-card">
+          <div class="plano-name">Enterprise</div>
+          <div class="plano-price"><sup></sup>Sob<br><span style="font-size:32px">consulta</span></div>
+          <div class="plano-unit">pacote mensal de horas</div>
+          <div class="plano-min">Banco de horas + SLA</div>
+          <div class="plano-divider"></div>
+          <div class="plano-features">
+            <div class="plano-feat">Tudo do plano Profissional</div>
+            <div class="plano-feat">Banco de horas mensais</div>
+            <div class="plano-feat">Squads dedicados</div>
+            <div class="plano-feat">Entrega contínua / sprints</div>
+            <div class="plano-feat">Revisões ilimitadas</div>
+            <div class="plano-feat">Arquitetura &amp; governança</div>
+            <div class="plano-feat">SLA garantido por contrato</div>
+          </div>
+          <a href="#cta" class="plano-btn">Falar com especialista</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══ DIFERENCIAIS ══ -->
+<section id="diferenciais">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">Por que Data FL</div>
+      <div class="sec-title">Expertise real.<br><span class="g">Resultado garantido.</span></div>
+      <p class="sec-desc">Mais de 9 anos atuando em projetos de dados para empresas de diferentes setores — do varejo ao mercado financeiro, da indústria à saúde.</p>
+    </div>
+    <div class="dif-grid">
+      <div class="dif-card">
+        <div class="dif-icon-wrap">⚡</div>
+        <div class="dif-title">Início em 24 horas</div>
+        <p class="dif-desc">Sem esperar semanas para começar. Contrate, alinhe e já na próxima manhã estamos executando o seu projeto.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon-wrap">🎯</div>
+        <div class="dif-title">Especialista sênior dedicado</div>
+        <p class="dif-desc">Você não fala com um account. Fala diretamente com a especialista que vai executar o seu projeto — do início ao fim.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon-wrap">🔒</div>
+        <div class="dif-title">Confidencialidade total</div>
+        <p class="dif-desc">NDA incluído em todos os contratos. Seus dados e processos são tratados com máxima segurança e discrição.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon-wrap">📐</div>
+        <div class="dif-title">Boas práticas do início</div>
+        <p class="dif-desc">Star Schema, DAX otimizado, documentação, versionamento — entregamos do jeito certo, não do jeito rápido-e-torto.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon-wrap">💬</div>
+        <div class="dif-title">Comunicação direta</div>
+        <p class="dif-desc">Updates constantes, sem enrolação. Você sabe exatamente em que fase está o projeto e o que vem pela frente.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon-wrap">🔄</div>
+        <div class="dif-title">Sem lock-in</div>
+        <p class="dif-desc">Entregamos com documentação completa e transferência de conhecimento. O projeto é seu, não nosso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SETORES ══ -->
+<section id="setores">
+  <div class="sec-inner" style="padding-bottom:0">
+    <div class="sec-head">
+      <div class="sec-label">Experiência de mercado</div>
+      <div class="sec-title">Setores onde <span class="g">já atuamos.</span></div>
+      <p class="sec-desc">Projetos entregues para empresas de diferentes portes e segmentos — cada setor com suas particularidades, todas com o mesmo padrão de qualidade.</p>
+    </div>
+  </div>
+  <div class="setores-strip">
+    <div class="setor-pill">
+      <div class="setor-pill-icon blue">💊</div>Farmacêutico & Saúde
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon teal">💰</div>Financeiro & Investimentos
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon orange">🏗️</div>Varejo & Construção
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon blue">🔒</div>Seguros
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon purple">💻</div>Tecnologia & Software
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon teal">🏭</div>Indústria & Manufatura
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon orange">🛒</div>E-commerce & Marketplace
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon purple">📦</div>Logística & Supply Chain
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon blue">🎓</div>Educação & EdTech
+    </div>
+    <div class="setor-pill">
+      <div class="setor-pill-icon teal">📊</div>Serviços & Consultoria
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECNOLOGIAS ══ -->
+<section id="tecnologias">
+  <div class="stack-title">Stack técnica completa</div>
+  <div class="stacks-grid">
+    <div class="stack-group">
+      <div class="stack-group-name">Visualização & BI</div>
+      <div class="stack-tags">
+        <span class="stk">Power BI</span>
+        <span class="stk">DAX</span>
+        <span class="stk">Power Query (M)</span>
+        <span class="stk">Looker Studio</span>
+        <span class="stk">Tableau</span>
+        <span class="stk">Report Builder</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-group-name">Engenharia & Pipelines</div>
+      <div class="stack-tags">
+        <span class="stk">Microsoft Fabric</span>
+        <span class="stk">Databricks</span>
+        <span class="stk">Alteryx</span>
+        <span class="stk">Dataflows Gen2</span>
+        <span class="stk">Azure Data Factory</span>
+        <span class="stk">dbt</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-group-name">IA & Copilots</div>
+      <div class="stack-tags">
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">✦ Genie AI</span>
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">Power BI Copilot</span>
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">Fabric Copilot</span>
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">ChatGPT / OpenAI</span>
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">Claude AI</span>
+        <span class="stk" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#c4b5fd">GitHub Copilot</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-group-name">SQL & Bancos de Dados</div>
+      <div class="stack-tags">
+        <span class="stk">SQL Server</span>
+        <span class="stk">PostgreSQL</span>
+        <span class="stk">MySQL</span>
+        <span class="stk">Oracle</span>
+        <span class="stk">Snowflake</span>
+        <span class="stk">DuckDB</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-group-name">Cloud & Integrações</div>
+      <div class="stack-tags">
+        <span class="stk">Azure</span>
+        <span class="stk">Power Apps</span>
+        <span class="stk">SAP</span>
+        <span class="stk">REST APIs</span>
+        <span class="stk">Google Analytics</span>
+        <span class="stk">Supermetrics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══ -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="sec-label" style="text-align:center;display:block">Pronto para começar?</div>
+    <div class="cta-title">Seu projeto de dados<br>começa <span class="g">agora.</span></div>
+    <p class="cta-desc">Manda uma mensagem, descreve o que precisa e em até 2 horas você recebe um retorno com estimativa de horas e prazo.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/5511999999999?text=Olá!%20Quero%20contratar%20serviço%20na%20Data%20FL" target="_blank" class="btn-primary">💬 WhatsApp · Iniciar agora</a>
+      <a href="mailto:contato@datafl.com.br" class="btn-secondary">✉ Enviar e-mail</a>
+    </div>
+    <p class="cta-note">Resposta em até 2h úteis · Sem compromisso · NDA incluso</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo" style="display:flex;align-items:center;gap:8px">
+    <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="10" fill="url(#logoGradF)"/>
+      <rect x="8" y="20" width="4" height="8" rx="2" fill="white" opacity="0.9"/>
+      <rect x="14" y="14" width="4" height="14" rx="2" fill="white"/>
+      <rect x="20" y="10" width="4" height="18" rx="2" fill="white" opacity="0.85"/>
+      <rect x="26" y="16" width="4" height="12" rx="2" fill="white" opacity="0.7"/>
+      <path d="M10 18 L16 12 L22 8 L28 14" stroke="#faf5c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+      <defs>
+        <linearGradient id="logoGradF" x1="0" y1="0" x2="36" y2="36">
+          <stop offset="0%" stop-color="#00bcc8"/>
+          <stop offset="100%" stop-color="#2d5a3d"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    Data FL
+  </div>
+        <p class="footer-tagline">Especialistas em Power BI e Engenharia de Dados sob demanda. Contratação por hora, sem burocracia.</p>
+        <div class="footer-social">
+          <a href="#" class="fsoc" title="LinkedIn">in</a>
+          <a href="#" class="fsoc" title="GitHub">gh</a>
+          <a href="#" class="fsoc" title="WhatsApp">wa</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Serviços</div>
+        <div class="footer-links">
+          <a href="#servicos">Dashboards Power BI</a>
+          <a href="#servicos">Modelagem DAX</a>
+          <a href="#servicos">ETL & Pipelines</a>
+          <a href="#servicos">Data Warehouse</a>
+          <a href="#servicos">Integrações SQL</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Empresa</div>
+        <div class="footer-links">
+          <a href="#diferenciais">Por que Data FL</a>
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#planos">Planos & Preços</a>
+          <a href="#tecnologias">Tecnologias</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contato</div>
+        <div class="footer-links">
+          <a href="mailto:contato@datafl.com.br">contato@datafl.com.br</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 <span>Data FL</span>. Todos os direitos reservados.</div>
+      <div class="footer-copy">Feito com dados e ☕</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ══ CONTADOR ANIMADO ══
+function animateCounter(el) {
+  const target = +el.dataset.target;
+  const duration = 2000;
+  const start = performance.now();
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target);
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.counter').forEach(animateCounter);
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) observer.observe(statsEl);
+
+// ══ BARRAS ANIMADAS NO HERO ══
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.hv-bfill').forEach(b => {
+      const w = b.style.width;
+      b.style.width = '0';
+      setTimeout(() => { b.style.width = w }, 400);
+    });
+  }, 300);
+});
+
+// ══ CALCULADORA UNIFICADA ══
+let currentProfile = 'prof';
+let currentPayment = 'pix';
+
+// Taxas por serviço (Profissional)
+const RATES = { pbi: 50, ux: 55, apps: 65, eng: 80 };
+const PIX_DISCOUNT_PCT  = 0.05;
+const PIX_DISCOUNT_MIN  = 5; // qtd mínima de serviços para ganhar desconto
+
+// Cores por serviço
+const SVC_COLORS = {
+  all:  { filter: '#00bcc8', theme: '' },
+  pbi:  { filter: '#00bcc8', theme: 'theme-pbi' },
+  apps: { filter: '#e67e22', theme: 'theme-apps' },
+  eng:  { filter: '#2d5a3d', theme: 'theme-eng' },
+  ux:   { filter: '#c0392b', theme: 'theme-ux' }
+};
+
+// Inicializar badges de preço com os valores corretos por serviço
+function initPriceBadges() {
+  document.querySelectorAll('.calc-item').forEach(item => {
+    const svc  = item.dataset.svc;
+    const hrs  = Number(item.dataset.hrs);
+    const rate = RATES[svc] || 50;
+    const cost = hrs * rate;
+    const badge = item.querySelector('.price-badge.prof');
+    if (badge) badge.textContent = `~R$${cost}`;
+  });
+}
+
+function setProfile(profile, btn) {
+  currentProfile = profile;
+  document.querySelectorAll('.profile-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const isEmp = profile === 'emp';
+  document.getElementById('emp-notice').style.display = isEmp ? 'block' : 'none';
+  document.getElementById('svc-filters-wrap').style.display = isEmp ? 'none' : '';
+  document.getElementById('calc-wrap-main').style.display = isEmp ? 'none' : '';
+  document.getElementById('emp-packages').style.display = isEmp ? '' : 'none';
+  highlightPrices();
+  if (!isEmp) updateCalc();
+}
+
+function filterSvc(filter, btn) {
+  document.querySelectorAll('.svc-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Aplicar tema de cor ao calc-wrap
+  const calcWrap = document.getElementById('calc-wrap-main');
+  calcWrap.classList.remove('theme-pbi','theme-apps','theme-eng','theme-ux');
+  if (SVC_COLORS[filter] && SVC_COLORS[filter].theme) {
+    calcWrap.classList.add(SVC_COLORS[filter].theme);
+  }
+
+  // Filtrar itens
+  document.querySelectorAll('.calc-item, .calc-cat-lbl, .calc-grid').forEach(el => {
+    const svc = el.dataset.svc;
+    el.classList.toggle('hidden', filter !== 'all' && svc !== filter);
+  });
+}
+
+function setPayment(method, labelEl) {
+  currentPayment = method;
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('active'));
+  if (labelEl) labelEl.classList.add('active');
+  updateCalc();
+}
+
+function highlightPrices() {
+  document.querySelectorAll('.price-badge').forEach(b => {
+    b.classList.remove('active-prof','active-emp','dim');
+    if (b.classList.contains('prof')) b.classList.add('active-prof');
+  });
+}
+
+function toggleCalc(el) {
+  el.classList.toggle('selected');
+  highlightPrices();
+  updateCalc();
+}
+
+function updateCalc() {
+  const selected = [...document.querySelectorAll('.calc-item.selected')];
+  const count    = selected.length;
+
+  const emptyEl    = document.getElementById('calc-empty');
+  const detailEl   = document.getElementById('calc-detail');
+  const rowsEl     = document.getElementById('calc-rows');
+  const hrsEl      = document.getElementById('calc-total-hrs');
+  const countEl    = document.getElementById('calc-count');
+  const valEl      = document.getElementById('calc-total-val');
+  const badge      = document.getElementById('calc-badge');
+  const rateInfo   = document.getElementById('calc-rate-info');
+  const rateVal    = document.getElementById('calc-rate-val');
+  const ctaBtn     = document.getElementById('calc-cta-btn');
+  const installEl  = document.getElementById('pay-installment-info');
+  const installVal = document.getElementById('installment-val');
+
+  if (count === 0) {
+    emptyEl.style.display = '';
+    detailEl.style.display = 'none';
+    valEl.textContent = '0';
+    badge.classList.remove('show');
+    rateInfo.textContent = 'Taxa aplicada';
+    rateVal.textContent  = '—';
+    ctaBtn.style.opacity = '.4';
+    ctaBtn.style.pointerEvents = 'none';
+    if (installEl) installEl.classList.remove('show');
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  detailEl.style.display = '';
+  ctaBtn.style.opacity = '1';
+  ctaBtn.style.pointerEvents = '';
+
+  let totalHrs = 0;
+  let subtotal = 0;
+
+  rowsEl.innerHTML = selected.map(el => {
+    const name = el.querySelector('.calc-svc-name').textContent;
+    const hrs  = Number(el.dataset.hrs);
+    const svc  = el.dataset.svc;
+    const rate = RATES[svc] || 50;
+    const cost = hrs * rate;
+    totalHrs += hrs;
+    subtotal += cost;
+    return `<div class="calc-sum-row">
+      <span style="font-size:11px;line-height:1.3">${name}</span>
+      <span style="font-size:11px;white-space:nowrap">${hrs}h · R$${cost.toLocaleString('pt-BR')}</span>
+    </div>`;
+  }).join('');
+
+  countEl.textContent = count;
+  hrsEl.textContent   = totalHrs + 'h';
+
+  const isPix        = currentPayment === 'pix';
+  const hasDiscount  = isPix && count >= PIX_DISCOUNT_MIN;
+  const discount     = hasDiscount ? Math.round(subtotal * PIX_DISCOUNT_PCT) : 0;
+  const total        = subtotal - discount;
+
+  // Montar rateVal com taxas por serviço presentes
+  const svcsPresentes = [...new Set(selected.map(el => el.dataset.svc))];
+  const rateLines = svcsPresentes.map(s => {
+    const labels = { pbi:'Power BI R$50/h', ux:'UX R$55/h', apps:'Apps R$65/h', eng:'Eng R$80/h' };
+    return labels[s] || s;
+  }).join(' · ');
+  rateInfo.textContent = 'Taxa por especialidade';
+  rateVal.textContent  = rateLines;
+
+  badge.classList.toggle('show', hasDiscount);
+  badge.textContent = hasDiscount ? '🎉 5% de desconto PIX aplicado!' : '';
+  if (hasDiscount) badge.classList.add('show');
+
+  valEl.textContent = total.toLocaleString('pt-BR');
+
+  // Parcelas no cartão
+  if (installEl && installVal) {
+    if (!isPix && total > 0) {
+      const parcela = Math.ceil(total / 5);
+      installVal.textContent = `R$${parcela.toLocaleString('pt-BR')}`;
+      installEl.classList.add('show');
+    } else {
+      installEl.classList.remove('show');
+    }
+  }
+}
+
+// Init
+initPriceBadges();
+highlightPrices();
+</script>
+</body>
+</html>
