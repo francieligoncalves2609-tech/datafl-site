@@ -1037,6 +1037,28 @@ footer {
 .intro-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px }
 .intro-logo-text { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: -2px }
 .intro-logo-text span { background: linear-gradient(135deg,#00bcc8,#a3c5a0); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
+
+/* ══ MEETING ANIMATION ══ */
+.meeting-scene {
+  position: relative; width: 100%;
+  animation: heroFadeUp .9s .3s cubic-bezier(.22,1,.36,1) both;
+}
+.meeting-svg {
+  width: 100%; height: auto; display: block;
+  border-radius: 20px;
+  filter: drop-shadow(0 16px 48px rgba(0,188,200,0.13));
+}
+.meeting-trust {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 16px; justify-content: center;
+}
+.mtrust-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 7px 14px;
+  font-size: 12px; font-weight: 600; color: var(--dark);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
 </style>
 </head>
 <body>
@@ -1112,33 +1134,141 @@ footer {
       </div>
     </div>
 
-    <!-- Trust block -->
-    <div class="hero-trust">
-      <div class="trust-headline-wrap">
-        <div class="trust-headline">Pague somente<br>após a entrega.</div>
-        <div class="trust-sub">Sem risco. Sem surpresa. Sem letra miúda.</div>
-      </div>
-      <div class="trust-items">
-        <div class="trust-item">
-          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <span>Cobrança somente quando você <strong>aprovar o resultado</strong></span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <span>Pague apenas as <strong>horas efetivamente usadas</strong></span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <span>Sem contrato de longo prazo ou <strong>fidelidade obrigatória</strong></span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <span><strong>NDA incluso</strong> em todos os projetos, sem custo extra</span>
-        </div>
-      </div>
-      <div class="trust-seal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10" stroke-width="2"/></svg>
-        <span><strong>Garantia Data FL</strong> — entrega ou não pagamento</span>
+    <!-- Meeting Animation -->
+    <div class="meeting-scene" aria-hidden="true">
+      <svg class="meeting-svg" viewBox="0 0 480 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background room -->
+        <rect width="480" height="360" fill="#f0faf4" rx="20"/>
+        <rect width="480" height="360" fill="url(#roomGrad)" rx="20"/>
+
+        <!-- Desk -->
+        <rect x="60" y="270" width="360" height="16" rx="8" fill="#c8dfc0"/>
+        <rect x="100" y="286" width="12" height="50" rx="4" fill="#b0cba8"/>
+        <rect x="368" y="286" width="12" height="50" rx="4" fill="#b0cba8"/>
+
+        <!-- Laptop body -->
+        <rect x="140" y="190" width="200" height="130" rx="10" fill="#1a3a2a"/>
+        <rect x="148" y="198" width="184" height="112" rx="6" fill="#0d2218"/>
+
+        <!-- Screen content: dashboard -->
+        <rect x="152" y="202" width="176" height="104" rx="4" fill="#0f2a1e"/>
+        <!-- Dashboard header -->
+        <rect x="156" y="206" width="168" height="14" rx="3" fill="#1a3a2a"/>
+        <text x="162" y="216" fill="#00bcc8" font-size="6" font-family="sans-serif" font-weight="700">Painel Executivo · Data FL</text>
+        <!-- KPI cards -->
+        <rect x="156" y="224" width="50" height="22" rx="3" fill="#00bcc8" opacity=".15"/>
+        <text x="162" y="233" fill="#00bcc8" font-size="5.5" font-family="sans-serif" font-weight="700">R$4,2M</text>
+        <text x="162" y="241" fill="#5a8a6a" font-size="4" font-family="sans-serif">Receita</text>
+        <rect x="212" y="224" width="50" height="22" rx="3" fill="#00bcc8" opacity=".10"/>
+        <text x="218" y="233" fill="#a3c5a0" font-size="5.5" font-family="sans-serif" font-weight="700">94%</text>
+        <text x="218" y="241" fill="#5a8a6a" font-size="4" font-family="sans-serif">SLA</text>
+        <rect x="268" y="224" width="52" height="22" rx="3" fill="#00bcc8" opacity=".10"/>
+        <text x="273" y="233" fill="#a3c5a0" font-size="5.5" font-family="sans-serif" font-weight="700">+31%</text>
+        <text x="273" y="241" fill="#5a8a6a" font-size="4" font-family="sans-serif">vs Ant.</text>
+        <!-- Chart bars animated -->
+        <rect x="158" y="286" width="8" height="18" rx="2" fill="#00bcc8" opacity=".7"><animate attributeName="height" values="10;18;12;18" dur="3s" repeatCount="indefinite"/><animate attributeName="y" values="294;286;290;286" dur="3s" repeatCount="indefinite"/></rect>
+        <rect x="170" y="280" width="8" height="24" rx="2" fill="#00bcc8"><animate attributeName="height" values="24;16;24;20" dur="3.5s" repeatCount="indefinite"/><animate attributeName="y" values="280;288;280;284" dur="3.5s" repeatCount="indefinite"/></rect>
+        <rect x="182" y="276" width="8" height="28" rx="2" fill="#2d5a3d" opacity=".9"><animate attributeName="height" values="28;20;28;24" dur="2.8s" repeatCount="indefinite"/><animate attributeName="y" values="276;284;276;280" dur="2.8s" repeatCount="indefinite"/></rect>
+        <rect x="194" y="283" width="8" height="21" rx="2" fill="#00bcc8" opacity=".6"><animate attributeName="height" values="21;28;18;21" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="283;276;286;283" dur="3.2s" repeatCount="indefinite"/></rect>
+        <rect x="206" y="278" width="8" height="26" rx="2" fill="#2d5a3d" opacity=".7"><animate attributeName="height" values="26;18;26;22" dur="4s" repeatCount="indefinite"/></rect>
+        <!-- Trend line -->
+        <polyline points="158,290 172,282 186,278 200,285 214,274 228,271 242,268 256,272 270,265 284,260 298,263" stroke="#00bcc8" stroke-width="1.5" fill="none" stroke-linecap="round"><animate attributeName="opacity" values="0;1;1;1" dur="1.5s" fill="freeze"/></polyline>
+
+        <!-- Laptop base/hinge -->
+        <rect x="130" y="318" width="220" height="10" rx="5" fill="#2d5a3d"/>
+        <rect x="190" y="326" width="100" height="6" rx="3" fill="#1a3a2a"/>
+
+        <!-- ── PERSON LEFT (girl - Francieli) ── -->
+        <!-- Body -->
+        <ellipse cx="118" cy="255" rx="32" ry="18" fill="#f8d7b0" opacity=".9"/>
+        <!-- Shirt -->
+        <path d="M90 265 Q118 258 146 265 L150 290 Q118 284 86 290 Z" fill="#00bcc8" opacity=".85"/>
+        <!-- Head -->
+        <circle cx="118" cy="228" r="22" fill="#f5c5a3"/>
+        <!-- Hair (menina - cabelo longo) -->
+        <path d="M96 222 Q88 210 92 198 Q100 185 118 183 Q136 185 144 198 Q148 210 140 222" fill="#4a2c1a"/>
+        <path d="M96 222 Q86 235 88 250 Q90 258 96 260" fill="#4a2c1a"/>
+        <path d="M140 222 Q150 235 148 250 Q146 258 140 260" fill="#4a2c1a"/>
+        <path d="M118 183 Q136 182 144 198 Q148 215 142 225 L140 222 Q138 210 136 202 Q128 196 118 196 Q108 196 100 202 Q98 210 96 222 L94 225 Q90 215 96 198 Q104 182 118 183Z" fill="#3a1f0e"/>
+        <!-- Face features -->
+        <ellipse cx="111" cy="227" rx="3" ry="3.5" fill="#2a1a0e" opacity=".8"/>
+        <ellipse cx="125" cy="227" rx="3" ry="3.5" fill="#2a1a0e" opacity=".8"/>
+        <path d="M112 237 Q118 242 124 237" stroke="#c0705a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Glasses -->
+        <rect x="107" y="222" width="10" height="8" rx="3" stroke="#2d5a3d" stroke-width="1.2" fill="none"/>
+        <rect x="121" y="222" width="10" height="8" rx="3" stroke="#2d5a3d" stroke-width="1.2" fill="none"/>
+        <line x1="117" y1="226" x2="121" y2="226" stroke="#2d5a3d" stroke-width="1.2"/>
+        <!-- Arms -->
+        <path d="M90 268 Q76 278 72 285" stroke="#f5c5a3" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <path d="M146 268 Q158 272 162 280" stroke="#f5c5a3" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <!-- Hand on laptop -->
+        <ellipse cx="162" cy="282" rx="8" ry="5" fill="#f5c5a3"/>
+
+        <!-- ── VIDEO CALL WINDOW (on screen top right) ── -->
+        <rect x="280" y="208" width="44" height="36" rx="4" fill="#1a4a35"/>
+        <rect x="282" y="210" width="40" height="30" rx="3" fill="#0d2e1e"/>
+        <!-- Person 2 in video call -->
+        <circle cx="302" cy="220" r="7" fill="#f0c090"/>
+        <path d="M295 218 Q298 213 302 212 Q306 213 309 218" fill="#5a3a20"/>
+        <path d="M290 232 Q295 228 302 227 Q309 228 314 232" fill="#2d5a3d" opacity=".9"/>
+        <!-- Speech bubble from video call -->
+        <rect x="296" y="246" width="40" height="16" rx="6" fill="#fff" opacity=".95">
+          <animate attributeName="opacity" values="0;0;.95;.95;0" dur="4s" repeatCount="indefinite"/>
+        </rect>
+        <polygon points="302,262 308,262 305,267" fill="#fff" opacity=".95">
+          <animate attributeName="opacity" values="0;0;.95;.95;0" dur="4s" repeatCount="indefinite"/>
+        </polygon>
+        <text x="300" y="256" fill="#1a3a2a" font-size="5" font-family="sans-serif" font-weight="600">
+          <animate attributeName="opacity" values="0;0;1;1;0" dur="4s" repeatCount="indefinite"/>
+          Esse KPI ficou
+        </text>
+        <text x="301" y="261" fill="#00bcc8" font-size="5" font-family="sans-serif" font-weight="700">
+          <animate attributeName="opacity" values="0;0;1;1;0" dur="4s" repeatCount="indefinite"/>
+          perfeito! ✓
+        </text>
+
+        <!-- Speech bubble from girl -->
+        <rect x="30" y="190" width="72" height="18" rx="7" fill="#00bcc8" opacity=".92">
+          <animate attributeName="opacity" values=".92;0;0;.92" dur="4s" repeatCount="indefinite"/>
+        </rect>
+        <polygon points="72,208 80,208 76,214" fill="#00bcc8" opacity=".92">
+          <animate attributeName="opacity" values=".92;0;0;.92" dur="4s" repeatCount="indefinite"/>
+        </polygon>
+        <text x="36" y="200" fill="#fff" font-size="5.5" font-family="sans-serif" font-weight="600">
+          <animate attributeName="opacity" values="1;0;0;1" dur="4s" repeatCount="indefinite"/>
+          Veja o dashboard —
+        </text>
+        <text x="42" y="207" fill="#fff" font-size="5.5" font-family="sans-serif" font-weight="600">
+          <animate attributeName="opacity" values="1;0;0;1" dur="4s" repeatCount="indefinite"/>
+          já está certo!
+        </text>
+
+        <!-- Floating badge "Live" -->
+        <rect x="282" y="211" width="14" height="7" rx="3" fill="#ff4444">
+          <animate attributeName="opacity" values="1;0.4;1" dur="1.2s" repeatCount="indefinite"/>
+        </rect>
+        <text x="285" y="216" fill="#fff" font-size="4.5" font-family="sans-serif" font-weight="700">LIVE</text>
+
+        <!-- Cursor / click animation on screen -->
+        <circle cx="230" cy="268" r="4" fill="none" stroke="#00bcc8" stroke-width="1.5">
+          <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Defs -->
+        <defs>
+          <linearGradient id="roomGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f7ee" stop-opacity=".6"/>
+            <stop offset="100%" stop-color="#f0faf4" stop-opacity=".3"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Trust pills below animation -->
+      <div class="meeting-trust">
+        <div class="mtrust-pill"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg> Pague só após a entrega</div>
+        <div class="mtrust-pill"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg> Especialista sênior dedicado</div>
+        <div class="mtrust-pill"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg> NDA incluso</div>
       </div>
     </div>
   </div>
@@ -1326,10 +1456,10 @@ footer {
 
     <!-- Service filter -->
     <div class="svc-filters" id="svc-filters-wrap">
-      <button class="svc-filter active" data-filter="all"  onclick="filterSvc('all',this)">🔍 Todos</button>
-      <button class="svc-filter"        data-filter="pbi"  onclick="filterSvc('pbi',this)">📊 Power BI</button>
-<button class="svc-filter"        data-filter="eng"  onclick="filterSvc('eng',this)">⚙️ Engenharia</button>
-      <button class="svc-filter"        data-filter="ux"   onclick="filterSvc('ux',this)">🎨 UX Designer</button>
+      <button class="svc-filter active" data-filter="all"  onclick="filterSvc('all',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Todos</button>
+      <button class="svc-filter"        data-filter="pbi"  onclick="filterSvc('pbi',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg> Power BI</button>
+      <button class="svc-filter"        data-filter="eng"  onclick="filterSvc('eng',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v4c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 9v4c0 1.66 4.03 3 9 3s9-1.34 9-3V9"/><path d="M3 13v4c0 1.66 4.03 3 9 3s9-1.34 9-3v-4"/></svg> Engenharia</button>
+      <button class="svc-filter"        data-filter="ux"   onclick="filterSvc('ux',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/></svg> UX Designer</button>
     </div>
 
     <!-- Calculator -->
@@ -1782,7 +1912,7 @@ footer {
     <div class="cta-title">Seu projeto de dados<br>começa <span class="g">agora.</span></div>
     <p class="cta-desc">Manda uma mensagem, descreve o que precisa e em até 2 horas você recebe um retorno com estimativa de horas e prazo.</p>
     <div class="cta-btns">
-      <a href="https://wa.me/5511999999999?text=Olá!%20Quero%20contratar%20serviço%20na%20Data%20FL" target="_blank" class="btn-primary">💬 WhatsApp · Iniciar agora</a>
+      <a href="https://wa.me/5511998494787?text=Olá!%20Quero%20contratar%20serviço%20na%20Data%20FL" target="_blank" class="btn-primary">💬 WhatsApp · Iniciar agora</a>
       <a href="mailto:contato@datafl.com.br" class="btn-secondary">✉ Enviar e-mail</a>
     </div>
     <p class="cta-note">Resposta em até 2h úteis · Sem compromisso · NDA incluso</p>
