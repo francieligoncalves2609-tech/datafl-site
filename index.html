@@ -89,12 +89,29 @@ nav {
 }
 .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite }
 @keyframes pulse { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.5; transform:scale(1.4) } }
+@keyframes heroFadeUp { from { opacity:0; transform:translateY(32px) } to { opacity:1; transform:translateY(0) } }
+@keyframes gradWave { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+@keyframes titleFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 .hero-title {
   font-size: 64px; font-weight: 900; line-height: 1.05;
   letter-spacing: -2px; margin-bottom: 10px;
+  animation: heroFadeUp .9s cubic-bezier(.22,1,.36,1) both;
 }
-.hero-title .grad { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
-.hero-title .grad2 { background: var(--grad2); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.hero-title .ht-line1 { display:block; animation: heroFadeUp .7s .05s cubic-bezier(.22,1,.36,1) both }
+.hero-title .ht-line2 { display:block; animation: heroFadeUp .7s .2s cubic-bezier(.22,1,.36,1) both }
+.hero-title .ht-line3 { display:block; animation: heroFadeUp .7s .35s cubic-bezier(.22,1,.36,1) both }
+.hero-title .grad {
+  background: linear-gradient(135deg, #00bcc8, #a3c5a0, #00d4c0, #00bcc8);
+  background-size: 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: gradWave 4s ease infinite;
+}
+.hero-title .grad2 {
+  background: linear-gradient(135deg, #2d5a3d, #00bcc8, #2d5a3d);
+  background-size: 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: gradWave 4s 1s ease infinite;
+}
 .hero-sub {
   font-size: 20px; font-weight: 600; color: var(--muted);
   margin-bottom: 20px; letter-spacing: -0.3px;
@@ -894,6 +911,39 @@ footer {
   .team-grid { grid-template-columns: 1fr }
   .team-card { padding: 24px 18px }
 }
+
+/* ══ PAYMENT MODAL ══ */
+.pay-modal-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(26,58,42,0.65); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.pay-modal-overlay.open { opacity: 1; pointer-events: all }
+.pay-modal {
+  background: var(--card); border-radius: 24px; padding: 32px 28px;
+  width: 92%; max-width: 400px; position: relative;
+  transform: translateY(24px) scale(.97);
+  transition: transform .3s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.18);
+  max-height: 90vh; overflow-y: auto;
+}
+.pay-modal-overlay.open .pay-modal { transform: translateY(0) scale(1) }
+.pay-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg2); border: 1.5px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 18px; font-weight: 700;
+  transition: all .2s; line-height: 1;
+}
+.pay-modal-close:hover { background: var(--border); color: var(--dark) }
+.pay-modal-title {
+  font-size: 18px; font-weight: 900; color: var(--dark);
+  margin-bottom: 4px;
+}
+.pay-modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 22px }
 </style>
 </head>
 <body>
@@ -940,9 +990,9 @@ footer {
         Self-service · Contratação por hora
       </div>
       <div class="hero-title">
-        Dados que<br>
-        <span class="grad">geram decisão.</span><br>
-        <span class="grad2">Sob demanda.</span>
+        <span class="ht-line1">Dados que</span>
+        <span class="ht-line2 grad">geram decisão.</span>
+        <span class="ht-line3 grad2">Sob demanda.</span>
       </div>
       <p class="hero-sub">Power BI · Engenharia de Dados · UX Design</p>
       <p class="hero-desc">
@@ -1355,7 +1405,7 @@ footer {
         <div class="calc-total-label">Total estimado</div>
         <div class="calc-total-val"><sup>R$</sup><span id="calc-total-val">0</span></div>
         <div class="calc-discount-badge" id="calc-badge">🎉 5% de desconto aplicado — 3+ serviços!</div>
-        <a href="#cta" class="calc-cta" id="calc-cta-btn" style="opacity:.4;pointer-events:none">💬 Falar via WhatsApp</a>
+        <a href="#cta" class="calc-cta" id="calc-cta-btn" style="opacity:.4;pointer-events:none"><svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> Falar via WhatsApp</a>
         <p class="calc-cta-note">Valores estimados com base em horas médias. O total exato é alinhado no primeiro contato.</p>
 
         <!-- Pagamento -->
@@ -1364,7 +1414,7 @@ footer {
           <div class="pay-opts">
             <label class="pay-opt active" id="pay-pix" onclick="setPayment('pix',this)">
               <input type="radio" name="payment" value="pix" checked>
-              <span class="pay-opt-icon">🏦</span>
+              <span class="pay-opt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M3 11l9-8 9 8"/><line x1="9" y1="21" x2="9" y2="11"/><line x1="15" y1="21" x2="15" y2="11"/></svg></span>
               <div class="pay-opt-info">
                 <div class="pay-opt-name">PIX</div>
                 <div class="pay-opt-desc">5% de desconto com 5+ serviços</div>
@@ -1373,7 +1423,7 @@ footer {
             </label>
             <label class="pay-opt" id="pay-card" onclick="setPayment('card',this)">
               <input type="radio" name="payment" value="card">
-              <span class="pay-opt-icon">💳</span>
+              <span class="pay-opt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
               <div class="pay-opt-info">
                 <div class="pay-opt-name">Cartão de crédito</div>
                 <div class="pay-opt-desc">Parcelado em até 5× sem juros</div>
@@ -1384,66 +1434,16 @@ footer {
             5× de <strong id="installment-val">R$0</strong> sem juros
           </div>
 
-          <!-- PIX QR Code panel -->
-          <div class="pix-panel show" id="pix-panel">
-            <div class="pix-label">Escaneie o QR Code com o app do seu banco</div>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=1a3a2a&bgcolor=f0faf4&data=00020126580014br.gov.bcb.pix0136francieligoncalves2609@gmail.com5204000053039865802BR5916Francieli%20FL6009SAO%20PAULO62070503***6304ABCD" alt="QR Code PIX">
-            <div class="pix-key-box">
-              <span>francieligoncalves2609@gmail.com</span>
-              <button class="pix-copy-btn" onclick="copyPix(this)">Copiar</button>
-            </div>
-          </div>
-
-          <!-- Cartão form -->
-          <div class="card-form" id="card-form">
-            <div class="card-preview">
-              <div class="card-chip">💳</div>
-              <div class="card-number-preview" id="prev-number">•••• •••• •••• ••••</div>
-              <div class="card-preview-row">
-                <span id="prev-name">NOME NO CARTÃO</span>
-                <span id="prev-expiry">MM/AA</span>
-              </div>
-            </div>
-            <div class="cf-field">
-              <div class="cf-label">Número do cartão</div>
-              <input class="cf-input" id="cf-number" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="fmtCard(this)">
-            </div>
-            <div class="cf-field">
-              <div class="cf-label">Nome no cartão</div>
-              <input class="cf-input" id="cf-name" type="text" placeholder="Como está no cartão" oninput="document.getElementById('prev-name').textContent=this.value.toUpperCase()||'NOME NO CARTÃO'">
-            </div>
-            <div class="cf-row">
-              <div class="cf-field">
-                <div class="cf-label">Validade</div>
-                <input class="cf-input" id="cf-expiry" type="text" maxlength="5" placeholder="MM/AA" oninput="fmtExpiry(this)">
-              </div>
-              <div class="cf-field">
-                <div class="cf-label">CVV</div>
-                <input class="cf-input" type="text" maxlength="4" placeholder="•••">
-              </div>
-            </div>
-            <div class="cf-field">
-              <div class="cf-label">Parcelas</div>
-              <select class="cf-select" id="cf-parcelas">
-                <option>1× sem juros</option>
-                <option>2× sem juros</option>
-                <option>3× sem juros</option>
-                <option>4× sem juros</option>
-                <option>5× sem juros</option>
-              </select>
-            </div>
-            <div class="cf-security">🔒 <span>Pagamento 100% seguro</span> — dados criptografados e cobrados após aprovação do serviço.</div>
-          </div>
         </div>
 
         <!-- Garantias -->
         <div class="pay-garantias">
           <div class="garantia-item">
-            <span class="garantia-icon">⏱️</span>
+            <span class="garantia-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg></span>
             <span><strong>Pague só o que usar</strong> — se o serviço prevê 2h e entregamos em 1h, você paga apenas 1h.</span>
           </div>
           <div class="garantia-item">
-            <span class="garantia-icon">🔐</span>
+            <span class="garantia-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="#00bcc8"/></svg></span>
             <span><strong>Cartão cobrado após conclusão</strong> — os dados do cartão ficam seguros e o débito só acontece depois que o serviço for finalizado e aprovado por você.</span>
           </div>
         </div>
@@ -1513,11 +1513,11 @@ footer {
       <!-- Garantias escopo fechado -->
       <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:32px;justify-content:center">
         <div class="garantia-item" style="max-width:340px;background:rgba(0,188,200,0.04);border:1px solid rgba(0,188,200,0.15);border-radius:12px;padding:14px 16px">
-          <span class="garantia-icon">⏱️</span>
+          <span class="garantia-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg></span>
           <span style="font-size:12px;color:var(--muted);line-height:1.55"><strong style="color:var(--dark)">Pague só as horas utilizadas</strong> — se o escopo prevê 2h e entregamos em 1h, você paga apenas 1h.</span>
         </div>
         <div class="garantia-item" style="max-width:340px;background:rgba(0,188,200,0.04);border:1px solid rgba(0,188,200,0.15);border-radius:12px;padding:14px 16px">
-          <span class="garantia-icon">🔐</span>
+          <span class="garantia-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00bcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="#00bcc8"/></svg></span>
           <span style="font-size:12px;color:var(--muted);line-height:1.55"><strong style="color:var(--dark)">Cartão cobrado após conclusão</strong> — os dados ficam protegidos e o débito ocorre somente após sua aprovação do serviço.</span>
         </div>
       </div>
@@ -1628,34 +1628,34 @@ footer {
   </div>
   <div class="setores-strip">
     <div class="setor-pill">
-      <div class="setor-pill-icon blue">💊</div>Farmacêutico & Saúde
+      <div class="setor-pill-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M10.5 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7"/><circle cx="17" cy="17" r="5"/><path d="M17 14v6M14 17h6"/></svg></div>Farmacêutico & Saúde
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon teal">💰</div>Financeiro & Investimentos
+      <div class="setor-pill-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>Financeiro & Investimentos
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon orange">🏗️</div>Varejo & Construção
+      <div class="setor-pill-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>Varejo & Construção
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon blue">🔒</div>Seguros
+      <div class="setor-pill-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Seguros
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon purple">💻</div>Tecnologia & Software
+      <div class="setor-pill-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>Tecnologia & Software
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon teal">🏭</div>Indústria & Manufatura
+      <div class="setor-pill-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M2 20h20M4 20V10l6-4v4l6-4v4l4-2v12"/></svg></div>Indústria & Manufatura
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon orange">🛒</div>E-commerce & Marketplace
+      <div class="setor-pill-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>E-commerce & Marketplace
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon purple">📦</div>Logística & Supply Chain
+      <div class="setor-pill-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>Logística & Supply Chain
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon blue">🎓</div>Educação & EdTech
+      <div class="setor-pill-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>Educação & EdTech
     </div>
     <div class="setor-pill">
-      <div class="setor-pill-icon teal">📊</div>Serviços & Consultoria
+      <div class="setor-pill-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></div>Serviços & Consultoria
     </div>
   </div>
 </section>
@@ -1902,18 +1902,20 @@ function setPayment(method, labelEl) {
   currentPayment = method;
   document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('active'));
   if (labelEl) labelEl.classList.add('active');
-  // Mostrar painel correto
-  const pixPanel  = document.getElementById('pix-panel');
-  const cardForm  = document.getElementById('card-form');
-  if (method === 'pix') {
-    pixPanel && pixPanel.classList.add('show');
-    cardForm && cardForm.classList.remove('show');
-  } else {
-    pixPanel && pixPanel.classList.remove('show');
-    cardForm && cardForm.classList.add('show');
-  }
+  openPayModal(method);
   updateCalc();
 }
+function openPayModal(method) {
+  document.getElementById('modal-pix').style.display  = method === 'pix'  ? '' : 'none';
+  document.getElementById('modal-card').style.display = method === 'card' ? '' : 'none';
+  document.getElementById('pay-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePayModal() {
+  document.getElementById('pay-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closePayModal(); });
 
 function fmtCard(el) {
   let v = el.value.replace(/\D/g,'').substring(0,16);
@@ -2037,5 +2039,74 @@ function updateCalc() {
 initPriceBadges();
 highlightPrices();
 </script>
+
+<!-- ══ PAYMENT MODALS ══ -->
+<div class="pay-modal-overlay" id="pay-modal-overlay" onclick="if(event.target===this)closePayModal()">
+  <div class="pay-modal">
+    <button class="pay-modal-close" onclick="closePayModal()">✕</button>
+
+    <!-- PIX panel -->
+    <div id="modal-pix">
+      <div class="pay-modal-title">Pagamento via PIX</div>
+      <div class="pay-modal-sub">Escaneie o QR Code ou copie a chave</div>
+      <div style="text-align:center">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=1a3a2a&bgcolor=f0faf4&data=francieligoncalves2609@gmail.com" alt="QR Code PIX" style="width:180px;height:180px;border-radius:12px;border:4px solid var(--bg2);box-shadow:0 4px 20px rgba(0,0,0,.08);display:block;margin:0 auto 16px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:600">Chave PIX (e-mail)</div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px">
+          <span style="font-size:12px;color:var(--dark);font-weight:600;flex:1;text-align:left">francieligoncalves2609@gmail.com</span>
+          <button onclick="copyPix(this)" style="background:var(--teal);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Copiar</button>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:rgba(0,188,200,0.06);border-radius:10px;border:1px solid rgba(0,188,200,0.15)">
+          <div style="font-size:11px;color:var(--muted);line-height:1.6"><strong style="color:var(--dark)">5% de desconto</strong> aplicado automaticamente ao selecionar 5+ serviços.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card panel -->
+    <div id="modal-card" style="display:none">
+      <div class="pay-modal-title">Cartão de crédito</div>
+      <div class="pay-modal-sub">Parcelado em até 5× sem juros</div>
+      <div class="card-preview" style="margin-bottom:18px">
+        <div class="card-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" style="width:28px;height:28px"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="card-number-preview" id="prev-number">•••• •••• •••• ••••</div>
+        <div class="card-preview-row">
+          <span id="prev-name">NOME NO CARTÃO</span>
+          <span id="prev-expiry">MM/AA</span>
+        </div>
+      </div>
+      <div class="cf-field">
+        <div class="cf-label">Número do cartão</div>
+        <input class="cf-input" id="cf-number" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="fmtCard(this)" inputmode="numeric">
+      </div>
+      <div class="cf-field">
+        <div class="cf-label">Nome no cartão</div>
+        <input class="cf-input" id="cf-name" type="text" placeholder="Como está impresso no cartão" oninput="document.getElementById('prev-name').textContent=this.value.toUpperCase()||'NOME NO CARTÃO'">
+      </div>
+      <div class="cf-row">
+        <div class="cf-field">
+          <div class="cf-label">Validade</div>
+          <input class="cf-input" id="cf-expiry" type="text" maxlength="5" placeholder="MM/AA" oninput="fmtExpiry(this)" inputmode="numeric">
+        </div>
+        <div class="cf-field">
+          <div class="cf-label">CVV</div>
+          <input class="cf-input" type="text" maxlength="4" placeholder="•••" inputmode="numeric">
+        </div>
+      </div>
+      <div class="cf-field">
+        <div class="cf-label">Parcelas</div>
+        <select class="cf-select" id="cf-parcelas">
+          <option>1× sem juros</option>
+          <option>2× sem juros</option>
+          <option>3× sem juros</option>
+          <option>4× sem juros</option>
+          <option>5× sem juros</option>
+        </select>
+      </div>
+      <div class="cf-security">🔒 <span>Pagamento 100% seguro</span> — dados criptografados. Cobrança somente após aprovação do serviço.</div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
