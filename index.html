@@ -502,6 +502,70 @@ section { padding: 100px 60px }
 }
 .pay-installment.show { display: block }
 
+/* ── PIX QR PANEL ── */
+.pix-panel {
+  display: none; margin-top: 14px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 16px; text-align: center;
+}
+.pix-panel.show { display: block }
+.pix-panel img { width: 160px; height: 160px; border-radius: 10px; margin: 0 auto 10px; display: block; border: 4px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.10) }
+.pix-key-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; font-size: 11px;
+  color: var(--mid); font-weight: 600; word-break: break-all;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px;
+}
+.pix-copy-btn {
+  background: var(--teal); color: #fff; border: none; border-radius: 6px;
+  padding: 4px 10px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.pix-copy-btn:hover { opacity: .85 }
+.pix-label { font-size: 11px; color: var(--muted); margin-bottom: 10px }
+
+/* ── CARD FORM ── */
+.card-form {
+  display: none; margin-top: 14px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px;
+}
+.card-form.show { display: block }
+.card-preview {
+  background: linear-gradient(135deg, #1a3a2a, #00bcc8);
+  border-radius: 14px; padding: 20px 18px; color: #fff;
+  margin-bottom: 14px; position: relative; overflow: hidden;
+  min-height: 100px;
+}
+.card-preview::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 110px; height: 110px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+.card-chip { font-size: 22px; margin-bottom: 10px }
+.card-number-preview {
+  font-size: 14px; font-weight: 700; letter-spacing: 2px;
+  margin-bottom: 10px; opacity: .95; font-family: monospace;
+}
+.card-preview-row { display: flex; justify-content: space-between; font-size: 10px; opacity: .8; font-weight: 600 }
+.cf-field { margin-bottom: 10px }
+.cf-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px }
+.cf-input {
+  width: 100%; padding: 9px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--card);
+  font-size: 13px; color: var(--dark); font-family: inherit;
+  outline: none; transition: border-color .2s;
+}
+.cf-input:focus { border-color: var(--teal) }
+.cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.cf-select {
+  width: 100%; padding: 9px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--card);
+  font-size: 13px; color: var(--dark); font-family: inherit;
+  outline: none; cursor: pointer;
+}
+.cf-security { font-size: 10px; color: var(--muted); text-align: center; margin-top: 8px }
+.cf-security span { color: var(--teal); font-weight: 700 }
+
 /* ══ DIFERENCIAIS ══ */
 #diferenciais { background: var(--bg) }
 .dif-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px }
@@ -1315,6 +1379,57 @@ footer {
           <div class="pay-installment" id="pay-installment-info">
             5× de <strong id="installment-val">R$0</strong> sem juros
           </div>
+
+          <!-- PIX QR Code panel -->
+          <div class="pix-panel show" id="pix-panel">
+            <div class="pix-label">Escaneie o QR Code com o app do seu banco</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=1a3a2a&bgcolor=f0faf4&data=00020126580014br.gov.bcb.pix0136francieligoncalves2609@gmail.com5204000053039865802BR5916Francieli%20FL6009SAO%20PAULO62070503***6304ABCD" alt="QR Code PIX">
+            <div class="pix-key-box">
+              <span>francieligoncalves2609@gmail.com</span>
+              <button class="pix-copy-btn" onclick="copyPix(this)">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Cartão form -->
+          <div class="card-form" id="card-form">
+            <div class="card-preview">
+              <div class="card-chip">💳</div>
+              <div class="card-number-preview" id="prev-number">•••• •••• •••• ••••</div>
+              <div class="card-preview-row">
+                <span id="prev-name">NOME NO CARTÃO</span>
+                <span id="prev-expiry">MM/AA</span>
+              </div>
+            </div>
+            <div class="cf-field">
+              <div class="cf-label">Número do cartão</div>
+              <input class="cf-input" id="cf-number" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="fmtCard(this)">
+            </div>
+            <div class="cf-field">
+              <div class="cf-label">Nome no cartão</div>
+              <input class="cf-input" id="cf-name" type="text" placeholder="Como está no cartão" oninput="document.getElementById('prev-name').textContent=this.value.toUpperCase()||'NOME NO CARTÃO'">
+            </div>
+            <div class="cf-row">
+              <div class="cf-field">
+                <div class="cf-label">Validade</div>
+                <input class="cf-input" id="cf-expiry" type="text" maxlength="5" placeholder="MM/AA" oninput="fmtExpiry(this)">
+              </div>
+              <div class="cf-field">
+                <div class="cf-label">CVV</div>
+                <input class="cf-input" type="text" maxlength="4" placeholder="•••">
+              </div>
+            </div>
+            <div class="cf-field">
+              <div class="cf-label">Parcelas</div>
+              <select class="cf-select" id="cf-parcelas">
+                <option>1× sem juros</option>
+                <option>2× sem juros</option>
+                <option>3× sem juros</option>
+                <option>4× sem juros</option>
+                <option>5× sem juros</option>
+              </select>
+            </div>
+            <div class="cf-security">🔒 <span>Pagamento 100% seguro</span> — dados criptografados e cobrados após aprovação do serviço.</div>
+          </div>
         </div>
 
         <!-- Garantias -->
@@ -1414,9 +1529,9 @@ footer {
     <div class="aloc-grid">
 
       <div class="aloc-text">
-        <div class="sec-label">Especialista na sua empresa</div>
-        <div class="sec-title">Alocação<br><span class="g">sob medida.</span></div>
-        <p class="sec-desc" style="margin-bottom:0">Tenha um especialista Data FL dedicado ao seu time — com a flexibilidade de um parceiro e a entrega de um sênior. Sem vínculo CLT, sem encargos, sem burocracia.</p>
+        <div class="sec-label">Suporte contínuo</div>
+        <div class="sec-title">Sustentação<br><span class="g">de Power BI.</span></div>
+        <p class="sec-desc" style="margin-bottom:0">Seus dashboards Power BI já existem — mas precisam de manutenção, ajustes e evolução contínua. A Data FL cuida de tudo por um valor fixo mensal, sem surpresas.</p>
 
         <div class="aloc-pills">
           <div class="aloc-pill"><span class="aloc-pill-icon">📅</span> Contratos a partir de 1 mês</div>
@@ -1430,34 +1545,24 @@ footer {
         <a href="#cta" class="btn-primary" style="display:inline-block">Falar sobre alocação →</a>
       </div>
 
-      <div class="aloc-cards">
-        <div class="aloc-card">
-          <div class="aloc-card-title">Part-time</div>
-          <div class="aloc-card-sub">Ideal para demandas contínuas não exclusivas</div>
+      <div class="aloc-cards" style="max-width:480px">
+        <div class="aloc-card featured" style="width:100%">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="font-size:24px">📊</span>
+            <div class="aloc-card-title" style="margin:0">Sustentação de Painéis Legados</div>
+          </div>
+          <div class="aloc-card-sub">Manutenção mensal de dashboards Power BI existentes — pacote fechado</div>
           <div class="aloc-price"><sup>R$</sup>5.500</div>
-          <div class="aloc-price-unit">por mês · 80h mensais</div>
+          <div class="aloc-price-unit">por mês · escopo fixo</div>
           <div class="aloc-feats">
-            <div class="aloc-feat">4h/dia útil dedicadas ao seu projeto</div>
-            <div class="aloc-feat">Power BI ou Engenharia de Dados</div>
-            <div class="aloc-feat">Reuniões de alinhamento semanais</div>
-            <div class="aloc-feat">Relatório quinzenal de entregas</div>
+            <div class="aloc-feat">Correção de erros e falhas nos relatórios</div>
+            <div class="aloc-feat">Atualização de fontes de dados e queries</div>
+            <div class="aloc-feat">Ajustes de DAX, medidas e visuais</div>
+            <div class="aloc-feat">Inclusão de novas páginas ou KPIs</div>
+            <div class="aloc-feat">Suporte a publicação e refresh automático</div>
+            <div class="aloc-feat">Reunião mensal de alinhamento + relatório</div>
           </div>
-          <a href="#cta" class="aloc-btn">Solicitar proposta</a>
-        </div>
-
-        <div class="aloc-card featured">
-          <div class="aloc-card-title">Full-time</div>
-          <div class="aloc-card-sub">Especialista 100% dedicado ao seu time</div>
-          <div class="aloc-price"><sup>R$</sup>9.500</div>
-          <div class="aloc-price-unit">por mês · 120h mensais</div>
-          <div class="aloc-feats">
-            <div class="aloc-feat">Dedicação exclusiva ao seu projeto</div>
-            <div class="aloc-feat">Multi-skill: BI + Engenharia + UX Design</div>
-            <div class="aloc-feat">Integração direta com seu time</div>
-            <div class="aloc-feat">Relatório semanal + daily se necessário</div>
-            <div class="aloc-feat">Renovação mensal sem fidelidade</div>
-          </div>
-          <a href="#cta" class="aloc-btn">Solicitar proposta</a>
+          <a href="#cta" class="aloc-btn">Contratar sustentação →</a>
         </div>
       </div>
 
@@ -1793,7 +1898,35 @@ function setPayment(method, labelEl) {
   currentPayment = method;
   document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('active'));
   if (labelEl) labelEl.classList.add('active');
+  // Mostrar painel correto
+  const pixPanel  = document.getElementById('pix-panel');
+  const cardForm  = document.getElementById('card-form');
+  if (method === 'pix') {
+    pixPanel && pixPanel.classList.add('show');
+    cardForm && cardForm.classList.remove('show');
+  } else {
+    pixPanel && pixPanel.classList.remove('show');
+    cardForm && cardForm.classList.add('show');
+  }
   updateCalc();
+}
+
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('prev-number').textContent = (el.value || '•••• •••• •••• ••••').padEnd(19,'•').substring(0,19);
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 3) v = v.substring(0,2)+'/'+v.substring(2);
+  el.value = v;
+  document.getElementById('prev-expiry').textContent = el.value || 'MM/AA';
+}
+function copyPix(btn) {
+  navigator.clipboard.writeText('francieligoncalves2609@gmail.com').then(() => {
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  });
 }
 
 function highlightPrices() {
