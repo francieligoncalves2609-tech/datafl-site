@@ -990,54 +990,6 @@ footer {
   font-size: 13px; color: var(--mid);
 }
 
-/* ══ INTRO CINEMATIC ══ */
-@keyframes introFadeIn  { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-@keyframes introFadeOut { from{opacity:1} to{opacity:0;pointer-events:none} }
-@keyframes progressBar  { from{width:0%} to{width:100%} }
-@keyframes lineReveal   { from{opacity:0;letter-spacing:6px} to{opacity:1;letter-spacing:-0.5px} }
-@keyframes scaleIn      { from{opacity:0;transform:scale(1.08)} to{opacity:1;transform:scale(1)} }
-
-#intro-overlay {
-  position: fixed; inset: 0; z-index: 99999;
-  background: #0d1f1a;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: pointer;
-}
-#intro-overlay.hide { animation: introFadeOut .8s forwards }
-.intro-scene {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; text-align: center; padding: 40px;
-}
-.intro-scene.active { animation: scaleIn .7s cubic-bezier(.22,1,.36,1) forwards }
-.intro-line {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: clamp(28px, 5vw, 64px);
-  font-weight: 900; letter-spacing: -2px; line-height: 1.1;
-  animation: lineReveal .6s cubic-bezier(.22,1,.36,1) forwards;
-}
-.intro-line.teal { background: linear-gradient(135deg,#00bcc8,#a3c5a0); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
-.intro-line.white { color: #ffffff }
-.intro-line.muted { color: rgba(255,255,255,0.5); font-size: clamp(14px,2vw,20px); font-weight: 500; letter-spacing: 2px; text-transform: uppercase; margin-top: 12px }
-.intro-line.sm { font-size: clamp(16px,2.5vw,28px); color: rgba(255,255,255,0.85); font-weight: 600; letter-spacing: -0.5px; margin-top: 10px }
-.intro-progress {
-  position: absolute; bottom: 0; left: 0; height: 3px;
-  background: linear-gradient(90deg,#00bcc8,#a3c5a0);
-  animation: progressBar 9.2s linear forwards;
-}
-.intro-skip {
-  position: absolute; bottom: 28px; right: 28px;
-  font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 600;
-  letter-spacing: 1px; text-transform: uppercase;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px; padding: 7px 16px; cursor: pointer;
-  transition: all .2s;
-}
-.intro-skip:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.1) }
-.intro-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px }
-.intro-logo-text { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: -2px }
-.intro-logo-text span { background: linear-gradient(135deg,#00bcc8,#a3c5a0); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
-
 /* ══ DEMO PLAYER ══ */
 .demo-player { width:100%; animation: heroFadeUp .9s .3s cubic-bezier(.22,1,.36,1) both; }
 .dp-win {
@@ -2378,48 +2330,6 @@ function copyPix(btn) {
   });
 }
 
-// ── INTRO CINEMATOGRÁFICO ──
-(function() {
-  const scenes   = ['sc1','sc2','sc3','sc4'];
-  const timings  = [0, 2500, 5000, 7500, 9800]; // ms de início de cada cena
-  let cur = 0, timers = [];
-
-  function showScene(i) {
-    scenes.forEach((id, idx) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.remove('active');
-      el.style.opacity = '0';
-    });
-    const el = document.getElementById(scenes[i]);
-    if (!el) return;
-    el.style.opacity = '';
-    el.classList.add('active');
-  }
-
-  function startIntro() {
-    document.body.style.overflow = 'hidden';
-    showScene(0);
-    for (let i = 1; i < scenes.length; i++) {
-      timers.push(setTimeout(() => showScene(i), timings[i]));
-    }
-    timers.push(setTimeout(skipIntro, timings[timings.length - 1]));
-  }
-
-  window.skipIntro = function() {
-    timers.forEach(clearTimeout);
-    const ov = document.getElementById('intro-overlay');
-    if (!ov) return;
-    ov.classList.add('hide');
-    setTimeout(() => { ov.remove(); document.body.style.overflow = ''; }, 800);
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startIntro);
-  } else {
-    startIntro();
-  }
-})();
 
 function highlightPrices() {
   document.querySelectorAll('.price-badge').forEach(b => {
@@ -2526,42 +2436,6 @@ initPriceBadges();
 highlightPrices();
 </script>
 
-<!-- ══ INTRO CINEMATOGRÁFICO ══ -->
-<div id="intro-overlay" onclick="skipIntro()">
-  <div class="intro-progress"></div>
-
-  <!-- Cena 1: 0–2.5s -->
-  <div class="intro-scene active" id="sc1">
-    <div class="intro-line muted">Data FL</div>
-    <div class="intro-line white" style="margin-top:16px">Seus dados têm o poder</div>
-    <div class="intro-line teal">de transformar decisões.</div>
-  </div>
-
-  <!-- Cena 2: 2.5–5s -->
-  <div class="intro-scene" id="sc2">
-    <div class="intro-line muted">especialistas sênior</div>
-    <div class="intro-line white" style="margin-top:16px">Power BI · Engenharia · UX</div>
-    <div class="intro-line sm">Disponíveis por hora, sem burocracia.</div>
-  </div>
-
-  <!-- Cena 3: 5–7.5s -->
-  <div class="intro-scene" id="sc3">
-    <div class="intro-line white">Pague somente</div>
-    <div class="intro-line teal">após a entrega.</div>
-    <div class="intro-line sm" style="color:rgba(255,255,255,0.55);font-size:clamp(13px,1.8vw,18px);letter-spacing:0;font-weight:400;margin-top:14px">Sem risco. Sem surpresa. Sem letra miúda.</div>
-  </div>
-
-  <!-- Cena 4: 7.5–9.5s -->
-  <div class="intro-scene" id="sc4">
-    <div class="intro-logo-wrap">
-      <svg width="52" height="52" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="url(#iGrad)"/><rect x="8" y="20" width="4" height="8" rx="2" fill="white" opacity="0.9"/><rect x="14" y="14" width="4" height="14" rx="2" fill="white"/><rect x="20" y="10" width="4" height="18" rx="2" fill="white" opacity="0.85"/><rect x="26" y="16" width="4" height="12" rx="2" fill="white" opacity="0.7"/><path d="M10 18 L16 12 L22 8 L28 14" stroke="#faf5c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/><defs><linearGradient id="iGrad" x1="0" y1="0" x2="36" y2="36"><stop offset="0%" stop-color="#00bcc8"/><stop offset="100%" stop-color="#2d5a3d"/></linearGradient></defs></svg>
-      <div class="intro-logo-text"><span>Data</span> FL</div>
-    </div>
-    <div class="intro-line sm" style="color:rgba(255,255,255,0.5);font-size:clamp(12px,1.5vw,16px);letter-spacing:3px;font-weight:500;text-transform:uppercase">Power BI · Engenharia · UX Design</div>
-  </div>
-
-  <button class="intro-skip" onclick="skipIntro()">Pular →</button>
-</div>
 
 <!-- ══ PAYMENT MODALS ══ -->
 <div class="pay-modal-overlay" id="pay-modal-overlay" onclick="if(event.target===this)closePayModal()">
