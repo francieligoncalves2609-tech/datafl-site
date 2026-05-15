@@ -76,8 +76,8 @@ nav {
   background-size: 50px 50px;
 }
 .hero-inner {
-  max-width: 1240px; margin: 0 auto; width: 100%;
-  display: grid; grid-template-columns: 1fr 520px; gap: 56px; align-items: center;
+  max-width: 900px; margin: 0 auto; width: 100%;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
   position: relative; z-index: 1;
 }
 .hero-badge {
@@ -93,8 +93,8 @@ nav {
 @keyframes gradWave { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 @keyframes titleFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 .hero-title {
-  font-size: 64px; font-weight: 900; line-height: 1.05;
-  letter-spacing: -2px; margin-bottom: 10px;
+  font-size: 82px; font-weight: 900; line-height: 1.02;
+  letter-spacing: -3px; margin-bottom: 10px;
   animation: heroFadeUp .9s cubic-bezier(.22,1,.36,1) both;
 }
 .hero-title .ht-line1 { display:block; animation: heroFadeUp .7s .05s cubic-bezier(.22,1,.36,1) both }
@@ -117,10 +117,21 @@ nav {
   margin-bottom: 20px; letter-spacing: -0.3px;
 }
 .hero-desc {
-  font-size: 16px; line-height: 1.75; color: var(--muted);
-  max-width: 500px; margin-bottom: 40px;
+  font-size: 17px; line-height: 1.75; color: var(--muted);
+  max-width: 640px; margin: 0 auto 40px;
 }
-.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px }
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px }
+.hero-trust-bar {
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 52px;
+  animation: heroFadeUp .7s .55s cubic-bezier(.22,1,.36,1) both;
+}
+.htrust-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 700; color: var(--muted);
+}
+.htrust-item svg { color: var(--teal); flex-shrink: 0; }
+.htrust-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
 .btn-primary {
   background: var(--grad); color: #fff;
   padding: 16px 36px; border-radius: 40px;
@@ -790,8 +801,8 @@ footer {
 /* Tablet landscape & small desktop */
 @media (max-width: 1100px) {
   nav { padding: 0 32px }
-  .hero-inner { gap: 48px }
-  .hero-title { font-size: 52px }
+  .hero-inner { gap: 32px }
+  .hero-title { font-size: 62px; letter-spacing: -2px }
   .stacks-grid { grid-template-columns: repeat(2,1fr) }
   .calc-wrap { flex-direction: column }
   .calc-summary { width: 100%; position: static; max-width: 100% }
@@ -808,9 +819,7 @@ footer {
   .nav-cta { padding: 8px 18px; font-size: 12px }
 
   .hero { padding: 88px 20px 56px }
-  .hero-inner { grid-template-columns: 1fr; gap: 40px }
-  .hero-visual { display: none }
-  .hero-title { font-size: 42px; letter-spacing: -1.5px }
+  .hero-title { font-size: 44px; letter-spacing: -1.5px }
   .hero-sub { font-size: 16px }
   .hero-desc { font-size: 15px }
   .hero-btns { flex-direction: column; gap: 12px }
@@ -990,16 +999,7 @@ footer {
   font-size: 13px; color: var(--mid);
 }
 
-/* ══ HERO SCENE ══ */
-.hero-scene {
-  width: 100%;
-  animation: heroFadeUp .9s .3s cubic-bezier(.22,1,.36,1) both;
-}
-.hero-scene svg {
-  width: 100%; height: auto; display: block;
-  border-radius: 24px;
-  filter: drop-shadow(0 20px 56px rgba(0,188,200,.14)) drop-shadow(0 4px 16px rgba(0,0,0,.07));
-}
+
 </style>
 </head>
 <body>
@@ -1059,6 +1059,30 @@ footer {
         <a href="#planos" class="btn-primary">Contratar por hora →</a>
         <a href="#servicos" class="btn-secondary">Ver serviços</a>
       </div>
+
+      <!-- Trust bar -->
+      <div class="hero-trust-bar">
+        <div class="htrust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Pague só após a entrega
+        </div>
+        <span class="htrust-sep"></span>
+        <div class="htrust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Especialista sênior dedicado
+        </div>
+        <span class="htrust-sep"></span>
+        <div class="htrust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          NDA incluso
+        </div>
+        <span class="htrust-sep"></span>
+        <div class="htrust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Sem contrato longo prazo
+        </div>
+      </div>
+
       <div class="hero-stats">
         <div>
           <div class="hstat-val"><span class="counter" data-target="120">0</span>+</div>
@@ -1075,93 +1099,6 @@ footer {
       </div>
     </div>
 
-    <!-- Hero Scene -->
-    <div class="hero-scene" aria-hidden="true">
-      <svg viewBox="0 0 520 370" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="scBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#eef8f3"/><stop offset="100%" stop-color="#ddf0e6"/></linearGradient>
-          <linearGradient id="scrGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1e15"/><stop offset="100%" stop-color="#0d2a1c"/></linearGradient>
-        </defs>
-        <rect width="520" height="370" fill="url(#scBg)"/>
-        <line x1="0" y1="290" x2="520" y2="290" stroke="#c8e0c0" stroke-width="1.5"/>
-        <rect x="0" y="308" width="520" height="8" rx="4" fill="#c4dab8"/>
-        <rect x="0" y="315" width="520" height="55" fill="#b0c8a0"/>
-        <rect x="246" y="272" width="14" height="38" rx="5" fill="#8aaa80"/>
-        <rect x="224" y="307" width="60" height="8" rx="4" fill="#7a9a70"/>
-        <rect x="145" y="72" width="220" height="202" rx="14" fill="#1a3a2a"/>
-        <rect x="155" y="82" width="200" height="180" rx="8" fill="url(#scrGrad)"/>
-        <rect x="155" y="82" width="200" height="18" rx="8" fill="#142e1f"/>
-        <rect x="155" y="92" width="200" height="8" fill="#142e1f"/>
-        <text x="255" y="95" text-anchor="middle" fill="#00bcc8" font-size="6.5" font-family="Arial,sans-serif" font-weight="700">Painel Executivo \xc2\xb7 Data FL</text>
-        <rect x="160" y="106" width="58" height="28" rx="5" fill="rgba(0,188,200,0.15)"/>
-        <text x="189" y="117" text-anchor="middle" fill="#00bcc8" font-size="9" font-weight="800" font-family="Arial,sans-serif">R$4,2M</text>
-        <text x="189" y="128" text-anchor="middle" fill="#5a8a6a" font-size="5.5" font-family="Arial,sans-serif">Receita</text>
-        <rect x="224" y="106" width="58" height="28" rx="5" fill="rgba(163,197,160,0.12)"/>
-        <text x="253" y="117" text-anchor="middle" fill="#a3c5a0" font-size="9" font-weight="800" font-family="Arial,sans-serif">94%</text>
-        <text x="253" y="128" text-anchor="middle" fill="#5a8a6a" font-size="5.5" font-family="Arial,sans-serif">SLA</text>
-        <rect x="288" y="106" width="62" height="28" rx="5" fill="rgba(163,197,160,0.12)"/>
-        <text x="319" y="117" text-anchor="middle" fill="#a3c5a0" font-size="9" font-weight="800" font-family="Arial,sans-serif">+31%</text>
-        <text x="319" y="128" text-anchor="middle" fill="#5a8a6a" font-size="5.5" font-family="Arial,sans-serif">Crescimento</text>
-        <rect x="163" y="256" width="14" height="0" rx="2.5" fill="#00bcc8" opacity=".8"><animate attributeName="height" values="0;28;28" keyTimes="0;0.3;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;228;228" keyTimes="0;0.3;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <rect x="181" y="256" width="14" height="0" rx="2.5" fill="#00bcc8"><animate attributeName="height" values="0;0;40;40" keyTimes="0;0.15;0.48;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;256;216;216" keyTimes="0;0.15;0.48;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <rect x="199" y="256" width="14" height="0" rx="2.5" fill="#2d5a3d" opacity=".9"><animate attributeName="height" values="0;0;22;22" keyTimes="0;0.28;0.55;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;256;234;234" keyTimes="0;0.28;0.55;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <rect x="217" y="256" width="14" height="0" rx="2.5" fill="#00bcc8" opacity=".65"><animate attributeName="height" values="0;0;34;34" keyTimes="0;0.42;0.68;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;256;222;222" keyTimes="0;0.42;0.68;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <rect x="235" y="256" width="14" height="0" rx="2.5" fill="#2d5a3d" opacity=".75"><animate attributeName="height" values="0;0;46;46" keyTimes="0;0.55;0.8;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;256;210;210" keyTimes="0;0.55;0.8;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <rect x="253" y="256" width="14" height="0" rx="2.5" fill="#00bcc8" opacity=".85"><animate attributeName="height" values="0;0;0;52;52" keyTimes="0;0.5;0.65;0.85;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="y" values="256;256;256;204;204" keyTimes="0;0.5;0.65;0.85;1" dur="3.2s" repeatCount="indefinite"/></rect>
-        <polyline points="170,228 188,216 206,234 224,222 242,210 260,204 278,199 296,195 314,191 332,187" stroke="#00bcc8" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-dasharray="250" stroke-dashoffset="250"><animate attributeName="stroke-dashoffset" values="250;0;0" keyTimes="0;0.82;1" dur="3.2s" repeatCount="indefinite"/></polyline>
-        <circle cx="220" cy="223" r="0" fill="none" stroke="#00bcc8" stroke-width="1.5"><animate attributeName="r" values="0;0;7;0" keyTimes="0;0.78;0.9;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.78;0.88;1" dur="3.2s" repeatCount="indefinite"/></circle>
-        <rect x="18" y="274" width="74" height="14" rx="6" fill="#2d4a5a" opacity=".85"/>
-        <rect x="18" y="258" width="15" height="28" rx="5" fill="#2d4a5a" opacity=".75"/>
-        <path d="M37 264 Q26 280 28 308 L90 308 Q92 280 84 264 Q72 255 61 254 Q50 255 37 264Z" fill="#3a5a7a"/>
-        <path d="M57 258 L53 268 L61 268 Z" fill="#fff" opacity=".9"/>
-        <path d="M62 258 L58 268 L67 268 Z" fill="#d0e0f0" opacity=".8"/>
-        <rect x="52" y="238" width="16" height="22" rx="6" fill="#f5c5a3"/>
-        <circle cx="60" cy="217" r="25" fill="#f5c5a3"/>
-        <path d="M36 207 Q38 184 60 182 Q82 184 84 207 L82 199 Q74 180 60 178 Q46 180 38 199 Z" fill="#3a2818"/>
-        <ellipse cx="84" cy="219" rx="5.5" ry="7" fill="#f0ba95"/>
-        <ellipse cx="36" cy="219" rx="5.5" ry="7" fill="#f0ba95"/>
-        <ellipse cx="66" cy="217" rx="3" ry="3.5" fill="#1a0e08"/>
-        <ellipse cx="54" cy="218" rx="2.5" ry="3" fill="#1a0e08"/>
-        <path d="M51 211 Q56 209 61 211" stroke="#3a2818" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M63 211 Q68 209 73 211" stroke="#3a2818" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M53 229 Q61 235 69 229" stroke="#c07060" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M83 272 Q106 266 130 259 Q142 255 153 251" stroke="#f5c5a3" stroke-width="13" stroke-linecap="round" fill="none"/>
-        <path d="M37 272 Q28 285 26 304" stroke="#3a5a7a" stroke-width="12" stroke-linecap="round" fill="none"/>
-        <rect x="430" y="274" width="74" height="14" rx="6" fill="#1a3a2a" opacity=".85"/>
-        <rect x="479" y="258" width="15" height="28" rx="5" fill="#1a3a2a" opacity=".75"/>
-        <path d="M440 292 L436 312 L454 312 L452 292Z" fill="#1a3a2a"/>
-        <path d="M462 292 L468 312 L484 312 L478 292Z" fill="#1a3a2a"/>
-        <path d="M432 264 Q420 280 422 308 L490 308 Q492 280 486 264 Q474 254 459 253 Q444 254 432 264Z" fill="#00bcc8"/>
-        <rect x="451" y="238" width="16" height="20" rx="6" fill="#f5c5a3"/>
-        <circle cx="459" cy="215" r="27" fill="#f5c5a3"/>
-        <path d="M433 204 Q432 177 459 174 Q486 177 485 204 L487 250 Q480 260 470 262 Q466 253 466 239 L464 204" fill="#3a1e0a" opacity=".92"/>
-        <path d="M433 204 Q425 220 424 240 Q423 258 432 270" stroke="#3a1e0a" stroke-width="14" fill="none" stroke-linecap="round" opacity=".9"/>
-        <rect x="444" y="209" width="13" height="10" rx="4" stroke="#1a3a2a" stroke-width="1.5" fill="rgba(200,235,255,0.25)"/>
-        <rect x="461" y="209" width="13" height="10" rx="4" stroke="#1a3a2a" stroke-width="1.5" fill="rgba(200,235,255,0.25)"/>
-        <line x1="457" y1="214" x2="461" y2="214" stroke="#1a3a2a" stroke-width="1.4"/>
-        <ellipse cx="450" cy="214" rx="2.5" ry="3" fill="#1a0e08"/>
-        <ellipse cx="467" cy="214" rx="2.5" ry="3" fill="#1a0e08"/>
-        <path d="M446 205 Q451 203 456 205" stroke="#3a1e0a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M462 205 Q467 203 472 205" stroke="#3a1e0a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M450 228 Q459 234 468 228" stroke="#c07060" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M433 272 Q410 263 388 253 Q374 247 362 241" stroke="#f5c5a3" stroke-width="13" stroke-linecap="round" fill="none"/>
-        <ellipse cx="359" cy="240" rx="11" ry="8" fill="#f5c5a3"/>
-        <path d="M351 234 Q343 229 337 224" stroke="#f5c5a3" stroke-width="5.5" stroke-linecap="round" fill="none"/>
-        <path d="M486 272 Q494 285 498 302" stroke="#00bcc8" stroke-width="11" stroke-linecap="round" fill="none"/>
-        <rect x="294" y="36" width="152" height="34" rx="12" fill="#00bcc8"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0;0.08;0.22;0.58;0.76;0.88;1" dur="5.5s" repeatCount="indefinite"/></rect>
-        <polygon points="313,70 329,70 321,80" fill="#00bcc8"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0;0.08;0.22;0.58;0.76;0.88;1" dur="5.5s" repeatCount="indefinite"/></polygon>
-        <text x="370" y="52" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" font-family="Arial,sans-serif"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0;0.08;0.22;0.58;0.76;0.88;1" dur="5.5s" repeatCount="indefinite"/>Veja esse KPI \xe2\x80\x94 subiu 31%!</text>
-        <text x="370" y="64" text-anchor="middle" fill="rgba(255,255,255,0.88)" font-size="7.5" font-family="Arial,sans-serif"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0;0.08;0.22;0.58;0.76;0.88;1" dur="5.5s" repeatCount="indefinite"/>Entrega conclu\xc3\xadda \xe2\x9c\x93</text>
-        <rect x="42" y="166" width="118" height="30" rx="10" fill="#fff" stroke="#c8e4d0" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0;0.38;0.56;0.68;0.78;0.92;0.97;1" dur="5.5s" repeatCount="indefinite"/></rect>
-        <polygon points="80,196 96,196 88,204" fill="#fff" stroke="#c8e4d0" stroke-width="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0;0.38;0.56;0.68;0.78;0.92;0.97;1" dur="5.5s" repeatCount="indefinite"/></polygon>
-        <text x="101" y="183" text-anchor="middle" fill="#1a3a2a" font-size="8" font-weight="700" font-family="Arial,sans-serif"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0;0.38;0.56;0.68;0.78;0.92;0.97;1" dur="5.5s" repeatCount="indefinite"/>Perfeito! Aprovado! \xe2\x9c\x93</text>
-        <rect x="366" y="142" width="96" height="38" rx="10" fill="#fff" stroke="#00bcc8" stroke-width="1.5"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.22;0.62;0.78;1" dur="7s" begin="1.2s" repeatCount="indefinite"/></rect>
-        <text x="414" y="157" text-anchor="middle" fill="#00bcc8" font-size="9" font-weight="800" font-family="Arial,sans-serif"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.22;0.62;0.78;1" dur="7s" begin="1.2s" repeatCount="indefinite"/>\xe2\x86\x91 31% Receita</text>
-        <text x="414" y="171" text-anchor="middle" fill="#5a8a6a" font-size="7.5" font-family="Arial,sans-serif"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.22;0.62;0.78;1" dur="7s" begin="1.2s" repeatCount="indefinite"/>vs. mesmo per\xc3\xadodo</text>
-        <circle cx="368" cy="141" r="0" fill="#00bcc8"><animate attributeName="r" values="0;3;0" dur="2.2s" begin="2.5s" repeatCount="indefinite"/></circle>
-        <circle cx="460" cy="138" r="0" fill="#a3c5a0"><animate attributeName="r" values="0;2.5;0" dur="1.8s" begin="3s" repeatCount="indefinite"/></circle>
-        <circle cx="464" cy="182" r="0" fill="#00bcc8"><animate attributeName="r" values="0;2;0" dur="2s" begin="2s" repeatCount="indefinite"/></circle>
-      </svg>
   </div>
 </section>
 
