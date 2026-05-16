@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Especialistas em Power BI, Engenharia de Dados e UX Design. Contrate por hora, sem contrato longo prazo. Pague só após a entrega.">
+<meta name="keywords" content="Power BI, Engenharia de Dados, dashboard, consultoria dados, freelancer dados, UX Design">
+<meta property="og:title" content="Data FL — Power BI & Engenharia de Dados sob demanda">
+<meta property="og:description" content="Contrate especialistas em dados por hora. Dashboards executivos, pipelines e UX. Pague só após a entrega.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://francieligoncalves2609-tech.github.io/datafl-site/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
 <title>Data FL — Power BI & Engenharia de Dados sob demanda</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0 }
@@ -1000,9 +1008,133 @@ footer {
 }
 
 
+/* ══ CASES ══ */
+.cases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px }
+.case-card {
+  background:var(--card); border:1px solid var(--border); border-radius:20px;
+  padding:28px 24px; position:relative; overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.case-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,0.08) }
+.case-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--grad);
+}
+.case-sector { font-size:11px; font-weight:800; color:var(--teal); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px }
+.case-result { font-size:38px; font-weight:900; color:var(--dark); letter-spacing:-1.5px; line-height:1; margin-bottom:6px }
+.case-result span { font-size:18px; letter-spacing:0 }
+.case-desc { font-size:13.5px; color:var(--muted); line-height:1.6; margin-bottom:16px }
+.case-tag { display:inline-block; background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; color:var(--mid) }
+@media(max-width:900px){ .cases-grid { grid-template-columns:1fr 1fr } }
+@media(max-width:600px){ .cases-grid { grid-template-columns:1fr } }
+
+/* ══ DEPOIMENTOS ══ */
+.dep-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px }
+.dep-card {
+  background:var(--card); border:1px solid var(--border); border-radius:20px;
+  padding:28px 24px; display:flex; flex-direction:column; gap:16px;
+  transition:transform .25s, box-shadow .25s;
+}
+.dep-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,0.08) }
+.dep-stars { display:flex; gap:3px }
+.dep-star { color:#f5a32e; font-size:15px }
+.dep-text { font-size:14.5px; line-height:1.7; color:var(--dark); font-style:italic; flex:1 }
+.dep-text::before { content:'\201C' }
+.dep-text::after  { content:'\201D' }
+.dep-author { display:flex; align-items:center; gap:12px; margin-top:auto }
+.dep-avatar {
+  width:44px; height:44px; border-radius:50%; flex-shrink:0;
+  background:var(--grad); display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:900; color:#fff;
+}
+.dep-name { font-size:13px; font-weight:800; color:var(--dark) }
+.dep-role { font-size:12px; color:var(--muted) }
+@media(max-width:900px){ .dep-grid { grid-template-columns:1fr 1fr } }
+@media(max-width:600px){ .dep-grid { grid-template-columns:1fr } }
+
+/* ══ FAQ ══ */
+.faq-list { max-width:720px; margin:48px auto 0; display:flex; flex-direction:column; gap:12px }
+.faq-item {
+  background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden;
+}
+.faq-q {
+  width:100%; text-align:left; padding:20px 24px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px; background:none; border:none; cursor:pointer;
+  font-size:15px; font-weight:700; color:var(--dark); line-height:1.4;
+  transition:color .2s;
+}
+.faq-q:hover { color:var(--teal) }
+.faq-icon {
+  width:24px; height:24px; flex-shrink:0; border-radius:50%;
+  background:var(--bg2); display:flex; align-items:center; justify-content:center;
+  transition:transform .3s, background .2s;
+}
+.faq-item.open .faq-icon { transform:rotate(45deg); background:var(--teal) }
+.faq-item.open .faq-icon svg { stroke:#fff }
+.faq-a {
+  max-height:0; overflow:hidden; transition:max-height .35s cubic-bezier(.22,1,.36,1), padding .3s;
+  padding:0 24px; font-size:14.5px; color:var(--muted); line-height:1.7;
+}
+.faq-item.open .faq-a { max-height:300px; padding:0 24px 20px }
+
+/* ══ WHATSAPP FLOAT ══ */
+.wa-float {
+  position:fixed; bottom:28px; right:28px; z-index:9000;
+  width:58px; height:58px; border-radius:50%;
+  background:#25d366; box-shadow:0 6px 24px rgba(37,211,102,0.45);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; transition:transform .25s, box-shadow .25s;
+  animation: waFloat 3s ease-in-out infinite;
+}
+.wa-float:hover { transform:scale(1.12); box-shadow:0 10px 36px rgba(37,211,102,0.6) }
+@keyframes waFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.wa-float svg { width:30px; height:30px; fill:#fff }
+.wa-tooltip {
+  position:absolute; right:68px; top:50%; transform:translateY(-50%);
+  background:#1a3a2a; color:#fff; font-size:12px; font-weight:700;
+  padding:7px 12px; border-radius:8px; white-space:nowrap;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+}
+.wa-tooltip::after {
+  content:''; position:absolute; left:100%; top:50%; transform:translateY(-50%);
+  border:5px solid transparent; border-left-color:#1a3a2a;
+}
+.wa-float:hover .wa-tooltip { opacity:1 }
+
+/* ══ LGPD ══ */
+#lgpd-banner {
+  position:fixed; bottom:0; left:0; right:0; z-index:99998;
+  background:#1a3a2a; color:#fff;
+  padding:16px 32px; display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  box-shadow:0 -4px 24px rgba(0,0,0,0.15);
+  transform:translateY(100%); transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+#lgpd-banner.show { transform:translateY(0) }
+#lgpd-banner p { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.5; flex:1; min-width:200px }
+#lgpd-banner p a { color:var(--teal); text-decoration:none }
+.lgpd-btns { display:flex; gap:10px; flex-shrink:0 }
+.lgpd-accept {
+  background:var(--teal); color:#fff; border:none; border-radius:20px;
+  padding:9px 20px; font-size:13px; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.lgpd-accept:hover { opacity:.85 }
+.lgpd-decline {
+  background:transparent; color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.2);
+  border-radius:20px; padding:9px 20px; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s;
+}
+.lgpd-decline:hover { color:#fff; border-color:rgba(255,255,255,0.5) }
 </style>
 </head>
 <body>
+
+<!-- LGPD Banner -->
+<div id="lgpd-banner">
+  <p>Usamos cookies para melhorar sua experiência. Ao continuar navegando, você concorda com nossa <a href="#" onclick="return false">Política de Privacidade</a> em conformidade com a LGPD.</p>
+  <div class="lgpd-btns">
+    <button class="lgpd-accept" onclick="lgpdAccept()">Aceitar cookies</button>
+    <button class="lgpd-decline" onclick="lgpdDecline()">Apenas essenciais</button>
+  </div>
+</div>
 
 <!-- ══ NAV ══ -->
 <nav>
@@ -1739,6 +1871,127 @@ footer {
   </div>
 </section>
 
+<!-- ══ CASES ══ -->
+<section id="cases">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">Resultados reais</div>
+      <div class="sec-title">O que entregamos<br><span class="g">em números.</span></div>
+      <p class="sec-desc">Projetos reais, impacto mensurável. Veja o que nossas entregas geraram para os clientes.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-sector">Varejo · Power BI</div>
+        <div class="case-result">3 dias<span> → 40min</span></div>
+        <p class="case-desc">Relatório mensal de vendas que levava 3 dias para consolidar passou a ser gerado automaticamente em 40 minutos com atualização diária.</p>
+        <span class="case-tag">Dashboard Executivo</span>
+      </div>
+      <div class="case-card">
+        <div class="case-sector">Indústria · Engenharia de Dados</div>
+        <div class="case-result">+47<span>% visibilidade</span></div>
+        <p class="case-desc">Pipeline de dados integrando 6 fontes distintas entregou visibilidade total do estoque em tempo real pela primeira vez na empresa.</p>
+        <span class="case-tag">Pipeline & ETL</span>
+      </div>
+      <div class="case-card">
+        <div class="case-sector">Financeiro · UX Design</div>
+        <div class="case-result">-62<span>% cliques</span></div>
+        <p class="case-desc">Redesign do painel financeiro reduziu em 62% os cliques para acessar indicadores críticos, acelerando o fechamento mensal.</p>
+        <span class="case-tag">UX Designer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEPOIMENTOS ══ -->
+<section id="depoimentos" style="background:var(--bg2)">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">Quem já contratou</div>
+      <div class="sec-title">O que os clientes<br><span class="g">estão dizendo.</span></div>
+    </div>
+    <div class="dep-grid">
+      <div class="dep-card">
+        <div class="dep-stars"><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span></div>
+        <p class="dep-text">Entregaram o dashboard em 3 dias, exatamente como eu precisava. A comunicação foi clara e o resultado superou as expectativas. Recomendo demais.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">RM</div>
+          <div><div class="dep-name">Ricardo M.</div><div class="dep-role">Gerente Comercial · Varejo</div></div>
+        </div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-stars"><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span></div>
+        <p class="dep-text">Tinha um painel legado há 2 anos que ninguém conseguia manter. A Data FL limpou tudo, documentou e entregou uma versão nova em 2 semanas. Excelente.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">CS</div>
+          <div><div class="dep-name">Camila S.</div><div class="dep-role">Coordenadora de BI · Indústria</div></div>
+        </div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-stars"><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span><span class="dep-star">★</span></div>
+        <p class="dep-text">O modelo de contratação por hora é perfeito para quem não quer assinar contrato longo. Paguei só após a entrega e ficou impecável. Já contratei 3 vezes.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">AT</div>
+          <div><div class="dep-name">André T.</div><div class="dep-role">Head de Dados · Financeiro</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section id="faq">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-label">Dúvidas frequentes</div>
+      <div class="sec-title">Perguntas que<br><span class="g">todo cliente faz.</span></div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Como funciona a contratação por hora?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Você descreve o que precisa, a gente estima as horas necessárias e apresenta o valor total. Após aprovação, iniciamos e você paga somente na entrega. Sem mensalidade, sem contrato longo prazo.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          E se eu não ficar satisfeito com a entrega?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Trabalhamos com revisões incluídas no escopo. Se algo não estiver como esperado, ajustamos sem custo adicional. Só consideramos a entrega concluída quando você estiver satisfeito.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Quanto tempo demora para entregar?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Depende do escopo. Dashboards simples saem em 2 a 5 dias úteis. Projetos maiores de engenharia de dados podem levar de 2 a 4 semanas. Sempre informamos o prazo antes de iniciar.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Preciso ter o Power BI já instalado?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Não obrigatoriamente. Orientamos sobre o que é necessário para cada projeto. Em alguns casos conseguimos trabalhar com a licença gratuita do Power BI Desktop. Avaliamos junto com você.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          O NDA é realmente gratuito?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Sim. Enviamos um Acordo de Não Divulgação antes de qualquer troca de informação confidencial, sem custo adicional. Sua empresa e seus dados estão protegidos desde o primeiro contato.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Vocês atendem empresas de qualquer porte?
+          <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a">Sim. Atendemos desde profissionais autônomos e pequenas empresas até grandes corporações. O modelo por hora permite que qualquer empresa acesse expertise sênior sem o custo de uma contratação CLT.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══ CTA FINAL ══ -->
 <section id="cta">
   <div class="cta-inner">
@@ -2138,5 +2391,29 @@ highlightPrices();
     </div>
   </div>
 </div>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/5511998494787?text=Olá!%20Quero%20saber%20mais%20sobre%20a%20Data%20FL" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <span class="wa-tooltip">Fale conosco</span>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// LGPD
+(function(){
+  if(!localStorage.getItem('lgpd')){
+    setTimeout(function(){ document.getElementById('lgpd-banner').classList.add('show'); }, 1500);
+  }
+})();
+function lgpdAccept(){ localStorage.setItem('lgpd','accepted'); document.getElementById('lgpd-banner').classList.remove('show'); }
+function lgpdDecline(){ localStorage.setItem('lgpd','declined'); document.getElementById('lgpd-banner').classList.remove('show'); }
+</script>
 </body>
 </html>
